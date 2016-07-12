@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="30dp"
     android:layout_marginBottom="10dp"
     android:background="@color/colorPrimary"
     tools:context=".SingleEventElement"
@@ -27,16 +27,23 @@
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/event_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/food_event_icon"
+    <LinearLayout
+        android:layout_width="40dp"
         android:layout_marginLeft="15dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:id="@+id/event_icon_wrapper"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/event_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/food_event_icon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

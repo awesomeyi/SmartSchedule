@@ -3,6 +3,7 @@ package com.example.yi.smartschedule;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class SingleEventElement extends Fragment {
     private TextView duration_text;
     private TextView description_text;
     private ImageView event_icon;
+    private View event_icon_wrapper;
 
     public SingleEventElement() {
         // Required empty public constructor
@@ -75,6 +77,7 @@ public class SingleEventElement extends Fragment {
         duration_text = ((TextView) v.findViewById(R.id.duration_text));
         description_text = ((TextView) v.findViewById(R.id.desciption_text));
         event_icon = (ImageView) v.findViewById(R.id.event_icon);
+        event_icon_wrapper = (View) v.findViewById(R.id.event_icon_wrapper);
 
         //Set all text boxes
         title_text.setText(title);
@@ -106,12 +109,14 @@ public class SingleEventElement extends Fragment {
 
         //.5 - 1 hours
         duration_text.setVisibility(View.GONE);
+        event_icon.getLayoutParams().width = event_icon.getLayoutParams().height;
         if(height >= .5 * L_HOUR_HEIGHT) {
             return;
         }
 
         // .25 - .5 hours
-        event_icon.setVisibility(View.GONE);
+        event_icon_wrapper.setVisibility(View.GONE);
+        title_text.setText("• • •");
         title_text.setTextSize(height - 8); //4 dp padding
         if(height >= .25 * L_HOUR_HEIGHT) {
             return;

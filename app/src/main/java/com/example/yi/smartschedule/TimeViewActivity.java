@@ -22,7 +22,7 @@ public class TimeViewActivity extends AppCompatActivity {
         String title = "Meet Ryan";
         String description = "Meet Ryan near the corner of 5th Ave.\nHe's going to be selling you drugs so bring money.";
 
-        int minutes[] = {20, 30, 40, 60, 90, 120, 180};
+        int minutes[] = {10, 20, 30, 40, 60, 90, 120, 180};
 
         event_list = (LinearLayout) findViewById(R.id.event_list);
         for(int t : minutes) {
