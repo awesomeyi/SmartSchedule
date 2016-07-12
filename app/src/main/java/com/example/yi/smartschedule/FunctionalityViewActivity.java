@@ -1,10 +1,14 @@
 package com.example.yi.smartschedule;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +30,7 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
     AudioManager audio;
     private boolean wifiInabled = true;
     private ContentResolver cResolver;
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,16 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
 
         Button brightness = (Button) findViewById(R.id.brightness);
         brightness.setOnClickListener(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(!System.canWrite(getApplicationContext())){
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + this.getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }
+
 
     }
 
