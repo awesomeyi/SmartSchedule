@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,12 +21,18 @@ public class SingleEventElement extends Fragment {
     private static final String ARG_PARAM3 = "title";
     private static final String ARG_PARAM4 = "description";
 
-    private static final int L_HOUR_HEIGHT = 60;
+    private static final int L_HOUR_HEIGHT = 70;
 
     private Time startTime;
     private Time duration;
     private String title;
     private String description;
+
+    //Elements
+    private TextView title_text;
+    private TextView duration_text;
+    private TextView description_text;
+    private ImageView event_icon;
 
     public SingleEventElement() {
         // Required empty public constructor
@@ -64,9 +71,10 @@ public class SingleEventElement extends Fragment {
         View v = inflater.inflate(R.layout.fragment_single_event_element, container, false);
 
         //Fetch all elements
-        TextView title_text = ((TextView) v.findViewById(R.id.title_text));
-        TextView duration_text = ((TextView) v.findViewById(R.id.duration_text));
-        TextView description_text = ((TextView) v.findViewById(R.id.desciption_text));
+        title_text = ((TextView) v.findViewById(R.id.title_text));
+        duration_text = ((TextView) v.findViewById(R.id.duration_text));
+        description_text = ((TextView) v.findViewById(R.id.desciption_text));
+        event_icon = (ImageView) v.findViewById(R.id.event_icon);
 
         //Set all text boxes
         title_text.setText(title);
@@ -74,17 +82,42 @@ public class SingleEventElement extends Fragment {
         duration_text.setText(this.durationText(startTime, endtime));
         description_text.setText(description);
 
-        //Shrink view to size
+        //Shrink view to correct size
         int finalHeight = (int) Math.round(L_HOUR_HEIGHT * duration.getHours());
-        Util.d("" + finalHeight);
-        if(finalHeight < 2 * L_HOUR_HEIGHT) {
-            description_text.setVisibility(View.GONE);
-        } else {
-            int dTextLine = (finalHeight - 2 * L_HOUR_HEIGHT) / 20 + 1;
-            description_text.setMaxLines(dTextLine);
-        }
         v.getLayoutParams().height = Util.pixel_to_dp(this, finalHeight);
-
+        this.resize(finalHeight);
         return v;
+    }
+
+    private void resize(int height) {
+
+        // >= 2 hours
+        if(height >= 2 * L_HOUR_HEIGHT) {
+            int dTextLine = (height - 2 * L_HOUR_HEIGHT) / 20 + 1;
+            description_text.setMaxLines(dTextLine);
+            return;
+        }
+
+        //1 - 2 hours
+        description_text.setVisibility(View.GONE);
+        if(height >= 1 * L_HOUR_HEIGHT) {
+            return;
+        }
+
+        //.5 - 1 hours
+        duration_text.setVisibility(View.GONE);
+        if(height >= .5 * L_HOUR_HEIGHT) {
+            return;
+        }
+
+        // .25 - .5 hours
+        event_icon.setVisibility(View.GONE);
+        title_text.setTextSize(height - 8); //4 dp padding
+        if(height >= .25 * L_HOUR_HEIGHT) {
+            return;
+        }
+
+        // < .25 hours
+        title_text.setVisibility(View.GONE);
     }
 }

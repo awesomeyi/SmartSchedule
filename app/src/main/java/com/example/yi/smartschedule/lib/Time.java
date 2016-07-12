@@ -12,19 +12,16 @@ public class Time implements Serializable {
     public Time(int hours, int minutes) {
         this.hours = hours;
         this.minutes = minutes;
+        this.hours += this.minutes / 60;
+        this.minutes %= 60;
+        this.hours %= 24;
     }
 
     public Time addTime(Time t2) {
         return addTime(t2.hours, t2.minutes);
     }
     public Time addTime(int hours, int minutes) {
-        Time res = new Time(this.hours, this.minutes);
-        res.minutes += minutes;
-        res.hours += this.minutes / 60;
-        res.minutes %= 60;
-        res.hours += hours;
-        res.hours %= 24;
-        return res;
+        return new Time(this.hours + hours, this.minutes + minutes);
     }
 
     public int getMinutes() {

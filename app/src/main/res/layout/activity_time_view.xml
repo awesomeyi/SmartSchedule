@@ -10,10 +10,15 @@
     android:background="@color/backgroundLight"
     tools:context="com.example.yi.smartschedule.TimeViewActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/event_list">
-    </LinearLayout>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/event_list">
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>
