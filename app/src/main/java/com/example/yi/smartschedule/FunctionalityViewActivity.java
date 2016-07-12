@@ -48,6 +48,10 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Button brightness = (Button) findViewById(R.id.brightness);
         brightness.setOnClickListener(this);
 
+        Button rotation = (Button) findViewById(R.id.rotate);
+        rotation.setOnClickListener(this);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(!System.canWrite(getApplicationContext())){
                 Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
@@ -79,6 +83,13 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
                 break;
             case R.id.wifi:
                 toggleWifi();
+                break;
+            case R.id.rotate:
+                try{
+                    toggleRotationLock();
+                }catch(Exception e){
+                    Util.d(e.toString());
+                }
                 break;
 
         }
@@ -114,6 +125,17 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Util.d("wifi set to: " + wifiInabled);
 
     }
+    public void toggleRotationLock() throws Settings.SettingNotFoundException{
+        boolean current = (System.getInt(cResolver, System.ACCELEROMETER_ROTATION) == 1);
+        System.putInt(cResolver, System.ACCELEROMETER_ROTATION, current? 0 : 1);
+        Util.d("rotion: " + !current);
+
+    }
+
+
+
+
+
     //this is a secure setting so it is read only
     public void toggleOnAirplaneMode() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
@@ -133,4 +155,6 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Util.d("Almost airplane mode ");
 
     }
+
+
 }
