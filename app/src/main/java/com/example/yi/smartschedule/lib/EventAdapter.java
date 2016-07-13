@@ -5,19 +5,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.SingleEventElement;
 
 /**
  * Created by Yi on 7/13/16.
  */
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int EVENT_ELEMENT = 0;
+    private static final int BLOCK_ELEMENT = 1;
+
     private Context context;
     private EventData allEvents [];
+
+    public static final int L_BLOCK_HEIGHT = 70;
 
     public EventAdapter(EventData allEvents []) {
         this.allEvents = allEvents;
@@ -25,21 +27,54 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater .from(parent.getContext())
-                                .inflate(R.layout.fragment_single_event_element, parent, false);
         this.context = parent.getContext();
-        EventViewHolder vh = new EventViewHolder(v);
-        return vh;
+        View v;
+
+        switch (viewType) {
+            case EVENT_ELEMENT:
+                v = LayoutInflater .from(parent.getContext())
+                        .inflate(R.layout.single_event_element, parent, false);
+                EventViewHolder evh = new EventViewHolder(v);
+                return evh;
+            case BLOCK_ELEMENT:
+                v = LayoutInflater .from(parent.getContext())
+                        .inflate(R.layout.event_block_element, parent, false);
+                BlockViewHolder bvh = new BlockViewHolder(v);
+                return bvh;
+        }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        EventViewHolder evh = (EventViewHolder) holder;
-        evh.setText(context, allEvents[position]);
+        Util.d("" + position);
+        switch (getItemViewType(position)) {
+            case EVENT_ELEMENT:
+                EventViewHolder evh = (EventViewHolder) holder;
+                evh.setData(context, allEvents[position / 2]);
+                break;
+            case BLOCK_ELEMENT:
+                BlockViewHolder bvh = (BlockViewHolder) holder;
+                int here = position / 2;
+                EventData before = allEvents[here], after = allEvents[here + 1];
+                Time duration = after.getStartTime().subtractTime( before.getStartTime().addTime(before.getDuration())  );
+                bvh.setData(context, duration);
+                break;
+        }
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        switch (position % 2) {
+            case 0: return EVENT_ELEMENT;
+            case 1: return BLOCK_ELEMENT;
+        }
+        return 0;
     }
 
     @Override
     public int getItemCount() {
-        return allEvents.length;
+        return allEvents.length * 2 - 1;
     }
 }

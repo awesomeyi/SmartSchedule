@@ -13,8 +13,6 @@ import com.example.yi.smartschedule.R;
  */
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
-    private static final int L_HOUR_HEIGHT = 70;
-
     //Top level view
     private View my_view;
 
@@ -41,13 +39,13 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         return String.format("%1$s - %2$s", start.formatStandard(), end.formatStandard());
     }
 
-    public void setText(Context ctx, EventData ed) {
+    public void setData(Context ctx, EventData ed) {
         title_text.setText(ed.getTitle());
         Time endtime = ed.getStartTime().addTime(ed.getDuration());
         duration_text.setText(this.durationText(ed.getStartTime(), endtime));
         description_text.setText(ed.getDescription());
 
-        int finalHeight = (int) Math.round(L_HOUR_HEIGHT * ed.getDuration().getHours());
+        int finalHeight = (int) Math.round(blockHeight() * ed.getDuration().getHours());
         my_view.getLayoutParams().height = Util.pixel_to_dp(ctx, finalHeight);
         this.resize(finalHeight);
     }
@@ -55,22 +53,22 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     private void resize(int height) {
 
         // >= 2 hours
-        if(height >= 2 * L_HOUR_HEIGHT) {
-            int dTextLine = (height - 2 * L_HOUR_HEIGHT) / 20 + 1;
+        if(height >= 2 * blockHeight()) {
+            int dTextLine = (height - 2 * blockHeight()) / 20 + 1;
             description_text.setMaxLines(dTextLine);
             return;
         }
 
         //1 - 2 hours
         description_text.setVisibility(View.GONE);
-        if(height >= 1 * L_HOUR_HEIGHT) {
+        if(height >= 1 * blockHeight()) {
             return;
         }
 
         //.5 - 1 hours
         duration_text.setVisibility(View.GONE);
         event_icon.getLayoutParams().width = event_icon.getLayoutParams().height;
-        if(height >= .5 * L_HOUR_HEIGHT) {
+        if(height >= .5 * blockHeight()) {
             return;
         }
 
@@ -78,11 +76,15 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         event_icon_wrapper.setVisibility(View.GONE);
         title_text.setText("• • •");
         title_text.setTextSize(height - 8); //4 dp padding
-        if(height >= .25 * L_HOUR_HEIGHT) {
+        if(height >= .25 * blockHeight()) {
             return;
         }
 
         // < .25 hours
         title_text.setVisibility(View.GONE);
+    }
+
+    private int blockHeight() {
+        return EventAdapter.L_BLOCK_HEIGHT;
     }
 }

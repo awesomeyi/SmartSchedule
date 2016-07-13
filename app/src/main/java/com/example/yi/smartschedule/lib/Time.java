@@ -24,6 +24,13 @@ public class Time implements Serializable {
         return new Time(this.hours + hours, this.minutes + minutes);
     }
 
+    public Time subtractTime(Time t2) {
+        return subtractTime(t2.hours, t2.minutes);
+    }
+    public Time subtractTime(int hours, int minutes) {
+        return new Time(this.hours - hours, this.minutes - minutes);
+    }
+
     public int getMinutes() {
         return this.hours * 60 + minutes;
     }

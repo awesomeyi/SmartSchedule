@@ -24,15 +24,15 @@ public class TimeViewActivity extends AppCompatActivity {
 
         RecyclerView main_event_list = (RecyclerView) findViewById(R.id.main_event_list);
 
-        Time startTime = new Time(1, 00);
         String title = "Meet Ryan";
         String description = "Meet Ryan near the corner of 5th Ave.\nHe's going to be selling you drugs so bring money.";
 
-        int minutes[] = {10, 20, 30, 40, 60, 90, 120, 180};
+        Time startTimes[] = { new Time(1, 00), new Time(2, 00), new Time(4, 00)};
+        int minutes[] = {30, 40, 60};
         EventData events[] = new EventData[minutes.length];
 
         for(int i = 0; i < minutes.length; ++i) {
-            events[i] = new EventData(startTime,  new Time(0, minutes[i]), title, description);
+            events[i] = new EventData(startTimes[i],  new Time(0, minutes[i]), title, description);
         }
         EventAdapter adapter = new EventAdapter(events);
         main_event_list.setAdapter(adapter);

@@ -2,16 +2,12 @@ package com.example.yi.smartschedule;
 
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.yi.smartschedule.lib.Constants;
 import com.example.yi.smartschedule.lib.EventData;
 import com.example.yi.smartschedule.lib.Time;
 import com.example.yi.smartschedule.lib.Util;
@@ -59,7 +55,7 @@ public class SingleEventElement extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_single_event_element, container, false);
+        View v = inflater.inflate(R.layout.single_event_element, container, false);
 
         //Fetch all elements
         title_text = ((TextView) v.findViewById(R.id.title_text));
