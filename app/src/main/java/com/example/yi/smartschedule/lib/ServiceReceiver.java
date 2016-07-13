@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule;
+package com.example.yi.smartschedule.lib;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
