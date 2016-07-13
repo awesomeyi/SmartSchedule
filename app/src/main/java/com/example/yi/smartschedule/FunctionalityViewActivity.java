@@ -1,9 +1,11 @@
 package com.example.yi.smartschedule;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -11,12 +13,16 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneStateListener;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.provider.Settings.System;
+import android.widget.Toast;
 
 import com.example.yi.smartschedule.lib.Util;
 
@@ -51,8 +57,16 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Button rotation = (Button) findViewById(R.id.rotate);
         rotation.setOnClickListener(this);
 
+        Button message = (Button) findViewById(R.id.message);
+        message.setOnClickListener(this);
+
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE},1);
+            }
             if(!System.canWrite(getApplicationContext())){
                 Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + this.getPackageName()));
@@ -90,6 +104,9 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
                 }catch(Exception e){
                     Util.d(e.toString());
                 }
+                break;
+            case R.id.message:
+                sendText("9143309136", "Suck My Dick");
                 break;
 
         }
@@ -131,6 +148,18 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Util.d("rotion: " + !current);
 
     }
+    public void sendText(String phoneNumber, String message){
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            Util.d("Sent message");
+        }
+
+        catch (Exception e) {
+            Util.d("Failed to send Text");
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -155,6 +184,5 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Util.d("Almost airplane mode ");
 
     }
-
 
 }
