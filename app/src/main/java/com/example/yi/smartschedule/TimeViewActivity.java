@@ -5,9 +5,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yi.smartschedule.lib.EventAdapter;
+import com.example.yi.smartschedule.lib.EventData;
 import com.example.yi.smartschedule.lib.Time;
 
 public class TimeViewActivity extends AppCompatActivity {
@@ -18,22 +22,21 @@ public class TimeViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_view);
 
+        RecyclerView main_event_list = (RecyclerView) findViewById(R.id.main_event_list);
+
         Time startTime = new Time(1, 00);
         String title = "Meet Ryan";
         String description = "Meet Ryan near the corner of 5th Ave.\nHe's going to be selling you drugs so bring money.";
 
         int minutes[] = {10, 20, 30, 40, 60, 90, 120, 180};
+        EventData events[] = new EventData[minutes.length];
 
-        event_list = (LinearLayout) findViewById(R.id.event_list);
-        for(int t : minutes) {
-
-            //Create fragment
-            Time duration = new Time(0, t);
-            Fragment event = SingleEventElement.newInstance(startTime, duration, title, description);
-            FragmentTransaction fragTrans =  getFragmentManager().beginTransaction().add(event_list.getId(), event, "fff" + t);
-            fragTrans.commit();
-            getFragmentManager().executePendingTransactions();
+        for(int i = 0; i < minutes.length; ++i) {
+            events[i] = new EventData(startTime,  new Time(0, minutes[i]), title, description);
         }
+        EventAdapter adapter = new EventAdapter(events);
+        main_event_list.setAdapter(adapter);
+        main_event_list.setLayoutManager(new LinearLayoutManager(this));
 
     }
 }

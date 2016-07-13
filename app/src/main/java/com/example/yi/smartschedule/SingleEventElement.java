@@ -12,22 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.lib.Constants;
+import com.example.yi.smartschedule.lib.EventData;
 import com.example.yi.smartschedule.lib.Time;
 import com.example.yi.smartschedule.lib.Util;
 
 public class SingleEventElement extends Fragment {
 
-    private static final String ARG_PARAM1 = "startTime";
-    private static final String ARG_PARAM2 = "duration";
-    private static final String ARG_PARAM3 = "title";
-    private static final String ARG_PARAM4 = "description";
+    private static final String ARG_PARAM1 = "eventData";
 
     private static final int L_HOUR_HEIGHT = 70;
 
-    private Time startTime;
-    private Time duration;
-    private String title;
-    private String description;
+    private EventData myEvent;
 
     //Elements
     private TextView title_text;
@@ -40,13 +35,10 @@ public class SingleEventElement extends Fragment {
         // Required empty public constructor
     }
 
-    public static SingleEventElement newInstance(Time startTime, Time duration, String title, String description) {
+    public static SingleEventElement newInstance(EventData myEvent) {
         SingleEventElement fragment = new SingleEventElement();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, startTime);
-        args.putSerializable(ARG_PARAM2, duration);
-        args.putString(ARG_PARAM3, title);
-        args.putString(ARG_PARAM4, description);
+        args.putSerializable(ARG_PARAM1, myEvent);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,10 +47,7 @@ public class SingleEventElement extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            startTime = (Time) getArguments().getSerializable(ARG_PARAM1);
-            duration = (Time) getArguments().getSerializable(ARG_PARAM2);
-            title = getArguments().getString(ARG_PARAM3);
-            description = getArguments().getString(ARG_PARAM4);
+            myEvent = (EventData) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -80,16 +69,20 @@ public class SingleEventElement extends Fragment {
         event_icon_wrapper = (View) v.findViewById(R.id.event_icon_wrapper);
 
         //Set all text boxes
-        title_text.setText(title);
-        Time endtime = startTime.addTime(duration);
-        duration_text.setText(this.durationText(startTime, endtime));
-        description_text.setText(description);
+        this.setText(myEvent);
 
         //Shrink view to correct size
-        int finalHeight = (int) Math.round(L_HOUR_HEIGHT * duration.getHours());
+        int finalHeight = (int) Math.round(L_HOUR_HEIGHT * myEvent.getDuration().getHours());
         v.getLayoutParams().height = Util.pixel_to_dp(this, finalHeight);
         this.resize(finalHeight);
         return v;
+    }
+
+    public void setText(EventData ed) {
+        title_text.setText(ed.getTitle());
+        Time endtime = ed.getStartTime().addTime(ed.getDuration());
+        duration_text.setText(this.durationText(ed.getStartTime(), endtime));
+        description_text.setText(ed.getDescription());
     }
 
     private void resize(int height) {
