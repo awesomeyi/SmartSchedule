@@ -16,7 +16,7 @@ public class LocationService extends Service {
 
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 0;
+    private static final float LOCATION_DISTANCE = 800;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -29,7 +29,13 @@ public class LocationService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             Util.d("onLocationChanged: " + location);
+            Location destination = new Location("UserProvider");
+            destination.setLatitude(40.92109203653464);
+            destination.setLongitude(-73.75241778358271);
             mLastLocation.set(location);
+            if(location.distanceTo(destination) < 800){
+                Functionality.ringerViberatePhone(getApplicationContext());
+            }
         }
 
         @Override

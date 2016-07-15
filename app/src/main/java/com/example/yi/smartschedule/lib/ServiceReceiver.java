@@ -28,7 +28,7 @@ public class ServiceReceiver extends BroadcastReceiver {
                         Util.d("I'm in " + state + " and the number is " + incomingNumber);
                         if(incomingNumber.equalsIgnoreCase("9143309136")){
 
-                            unSilencePhone(context);
+                            Functionality.unSilencePhone(context);
                         }
                         break;
                     default:
@@ -37,15 +37,6 @@ public class ServiceReceiver extends BroadcastReceiver {
             }
         },PhoneStateListener.LISTEN_CALL_STATE);
     }
-    public void silencePhone(Context context){
-        AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        Util.d("Phone silenced");
-    }
-    public void unSilencePhone(Context context){
-        AudioManager audio =  (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        Util.d("Phone sound Normal");
-    }
+
 
 }

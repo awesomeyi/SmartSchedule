@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.provider.Settings.System;
 import android.widget.Toast;
 
+import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.lib.Util;
 
 import java.lang.reflect.Field;
@@ -128,7 +129,7 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
                 break;
             case R.id.brightness:
                 try {
-                    setSystemBrightness(70);
+                    Functionality.setSystemBrightness(250, getApplicationContext());
                 }catch (Settings.SettingNotFoundException e){
                     Util.d("" + e.toString());
                 }

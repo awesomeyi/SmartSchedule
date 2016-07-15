@@ -2,6 +2,7 @@ package com.example.yi.smartschedule;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.yi.smartschedule.lib.LocationService;
+import com.example.yi.smartschedule.lib.MyPhoneStateListener;
 
 public class MainViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,7 +28,8 @@ public class MainViewActivity extends AppCompatActivity implements View.OnClickL
         Button dunce = (Button) findViewById(R.id.dunce);
         dunce.setOnClickListener(this);
 
-        stopService(new Intent(this, LocationService.class));
+        startService(new Intent(this, LocationService.class));
+
     }
 
     @Override
