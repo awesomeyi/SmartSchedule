@@ -15,7 +15,7 @@ import android.util.Log;
 public class LocationService extends Service {
 
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 5 * 60000;
+    private static final int LOCATION_INTERVAL = 0; //5 * 60000
     private static final float LOCATION_DISTANCE = 800;
 
     private class LocationListener implements android.location.LocationListener {

@@ -32,10 +32,11 @@ public class MainViewActivity extends AppCompatActivity implements View.OnClickL
         Button dunce = (Button) findViewById(R.id.dunce);
         dunce.setOnClickListener(this);
 
-        stopService(new Intent(this, LocationService.class));
-
         Functionality functionality = new Functionality(getApplicationContext());
-        //functionality.addTrigger("TIME", "40.92109203653464,-73.75241778358271", "silencePhone");
+        functionality.addTrigger("phoneCall", "9143309136", "unSilencePhone");
+        startService(new Intent(this, LocationService.class));
+
+
         //functionality.gpsTrigger(new Location("J"));
 
     }

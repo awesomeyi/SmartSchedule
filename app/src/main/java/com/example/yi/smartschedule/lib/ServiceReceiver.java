@@ -26,10 +26,9 @@ public class ServiceReceiver extends BroadcastReceiver {
                     case TelephonyManager.CALL_STATE_RINGING:
                         // CALL_STATE_RINGING
                         Util.d("I'm in " + state + " and the number is " + incomingNumber);
-                        if(incomingNumber.equalsIgnoreCase("9143309136")){
+                        Functionality functionality = new Functionality(context);
+                        functionality.phoneTrigger(incomingNumber);
 
-                            Functionality.unSilencePhone(context);
-                        }
                         break;
                     default:
                         break;
