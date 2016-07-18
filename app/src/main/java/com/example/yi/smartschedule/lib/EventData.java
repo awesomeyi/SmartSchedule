@@ -28,6 +28,10 @@ public class EventData implements Serializable {
         return this.startTime;
     }
 
+    public Time getEndTime() {
+        return this.getStartTime().addTime(this.getDuration());
+    }
+
     public EventData setDuration(Time duration) {
         this.duration = duration;
         return this;

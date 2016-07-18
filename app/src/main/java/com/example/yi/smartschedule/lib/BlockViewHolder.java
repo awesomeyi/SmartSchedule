@@ -3,6 +3,7 @@ package com.example.yi.smartschedule.lib;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import com.example.yi.smartschedule.TimeViewActivity;
 
 /**
  * Created by Yi on 7/13/16.
@@ -23,6 +24,6 @@ public class BlockViewHolder extends RecyclerView.ViewHolder {
     }
 
     public int blockHeight() {
-        return EventAdapter.L_BLOCK_HEIGHT;
+        return TimeViewActivity.L_BLOCK_HEIGHT;
     }
 }

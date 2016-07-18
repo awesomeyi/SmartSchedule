@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
+import com.example.yi.smartschedule.TimeViewActivity;
 
 /**
  * Created by Yi on 7/13/16.
@@ -85,6 +86,6 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     }
 
     private int blockHeight() {
-        return EventAdapter.L_BLOCK_HEIGHT;
+        return TimeViewActivity.L_BLOCK_HEIGHT;
     }
 }

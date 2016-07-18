@@ -17,11 +17,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int BLOCK_ELEMENT = 1;
 
     private Context context;
-    private EventData allEvents [];
+    private EventStore allEvents;
 
-    public static final int L_BLOCK_HEIGHT = 70;
-
-    public EventAdapter(EventData allEvents []) {
+    public EventAdapter(EventStore allEvents) {
         this.allEvents = allEvents;
     }
 
@@ -47,16 +45,15 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Util.d("" + position);
         switch (getItemViewType(position)) {
             case EVENT_ELEMENT:
                 EventViewHolder evh = (EventViewHolder) holder;
-                evh.setData(context, allEvents[position / 2]);
+                evh.setData(context, allEvents.at(position / 2));
                 break;
             case BLOCK_ELEMENT:
                 BlockViewHolder bvh = (BlockViewHolder) holder;
                 int here = position / 2;
-                EventData before = allEvents[here], after = allEvents[here + 1];
+                EventData before = allEvents.at(here), after = allEvents.at(here + 1);
                 Time duration = after.getStartTime().subtractTime( before.getStartTime().addTime(before.getDuration())  );
                 bvh.setData(context, duration);
                 break;
@@ -75,6 +72,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return allEvents.length * 2 - 1;
+        return allEvents.count() * 2 - 1;
     }
 }

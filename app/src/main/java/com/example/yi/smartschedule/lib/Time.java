@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Yi on 7/11/16.
  */
-public class Time implements Serializable {
+public class Time implements Serializable, Comparable<Time> {
     private int hours;
     private int minutes;
 
@@ -45,5 +45,10 @@ public class Time implements Serializable {
         th = th == 0 ? 12: th;
         String tm = minutes == 0 ? "" : String.format(":%1$02d", this.minutes);
         return "" + th + tm + apm;
+    }
+
+    @Override
+    public int compareTo(Time time) {
+        return ((Integer) this.getMinutes()).compareTo((Integer) time.getMinutes());
     }
 }
