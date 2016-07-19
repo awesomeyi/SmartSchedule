@@ -41,10 +41,14 @@ public class Time implements Serializable, Comparable<Time> {
 
     public String formatStandard() {
         String apm = hours < 12 ? "a" : "p";
-        int th = this.hours % 12;
-        th = th == 0 ? 12: th;
+        int th = this.milToStandardHours(hours);
         String tm = minutes == 0 ? "" : String.format(":%1$02d", this.minutes);
         return "" + th + tm + apm;
+    }
+
+    public static int milToStandardHours(int hours) {
+        int th = hours % 12;
+        return th == 0 ? 12: th;
     }
 
     @Override

@@ -38,7 +38,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
             allBlocks.add(new EventViewHolder.EventBlock(duration, false));
         }
         //Insert last event
-        allBlocks.add(new EventViewHolder.EventBlock(allEvents.last(), true));
+        EventData last = allEvents.last();
+        allBlocks.add(new EventViewHolder.EventBlock(last, true));
+        //End padding
+        Time duration = ( new Time((int) Math.ceil(last.getEndTime().getHours()), 0) ).subtractTime(last.getEndTime());
+        allBlocks.add(new EventViewHolder.EventBlock(duration, false));
+        allBlocks.add(new EventViewHolder.EventBlock(15));
     }
 
     @Override

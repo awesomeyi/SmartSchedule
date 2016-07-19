@@ -35,8 +35,8 @@ public class TimeViewActivity extends AppCompatActivity {
         String title = "Meet Ryan";
         String description = "Meet Ryan near the corner of 5th Ave.\nHe's going to be selling you drugs so bring money.";
 
-        Time startTimes[] = { new Time(1, 00), new Time(2, 00), new Time(4, 00), new Time(5, 30), new Time(6, 00), new Time(10, 00)};
-        int minutes[] = {30, 40, 60, 20, 80, 30};
+        Time startTimes[] = { new Time(7, 00), new Time(9, 00), new Time(10, 30), new Time(13, 00), new Time(15, 30)};
+        int minutes[] = {60, 60, 90, 60, 180};
         EventData events[] = new EventData[minutes.length];
 
         for(int i = 0; i < minutes.length; ++i) {
@@ -57,7 +57,5 @@ public class TimeViewActivity extends AppCompatActivity {
         main_event_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         AlignmentManager.join(orientation, time_line_list, main_event_list);
-
-        Util.d("" + eventStore.startEndInInterval(new Time(7, 01), new Time(7, 59)));
     }
 }
