@@ -12,11 +12,11 @@
     tools:context="com.example.yi.smartschedule.TimeViewActivity">
 
 
-    <android.support.v7.widget.RecyclerView
+    <aligningrecyclerview.AligningRecyclerView
         android:id="@+id/time_line_list"
         android:layout_width="45dp"
         android:layout_height="match_parent" />
-    <android.support.v7.widget.RecyclerView
+    <aligningrecyclerview.AligningRecyclerView
         android:id="@+id/main_event_list"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />
