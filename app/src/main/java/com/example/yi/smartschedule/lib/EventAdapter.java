@@ -8,70 +8,55 @@ import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Yi on 7/13/16.
  */
-public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     private static final int EVENT_ELEMENT = 0;
     private static final int BLOCK_ELEMENT = 1;
 
     private Context context;
     private EventStore allEvents;
+    private ArrayList<EventViewHolder.EventBlock> allBlocks = new ArrayList<>();
 
     public EventAdapter(EventStore allEvents) {
         this.allEvents = allEvents;
+
+        //Insert start padding
+        allBlocks.add(new EventViewHolder.EventBlock(15));
+
+        for(int i = 0; i < allEvents.count() - 1; ++i) {
+            EventData event = allEvents.at(i);
+            allBlocks.add(new EventViewHolder.EventBlock(event, true)); //Add the actual event
+
+            //Add the padding
+            EventData before = allEvents.at(i), after = allEvents.at(i + 1);
+            Time duration = after.getStartTime().subtractTime( before.getStartTime().addTime(before.getDuration())  );
+            allBlocks.add(new EventViewHolder.EventBlock(duration, false));
+        }
+        //Insert last event
+        allBlocks.add(new EventViewHolder.EventBlock(allEvents.last(), true));
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.context = parent.getContext();
-        View v;
-
-        switch (viewType) {
-            case EVENT_ELEMENT:
-                v = LayoutInflater .from(parent.getContext())
+        View v = LayoutInflater .from(parent.getContext())
                         .inflate(R.layout.single_event_element, parent, false);
-                EventViewHolder evh = new EventViewHolder(v);
-                return evh;
-            case BLOCK_ELEMENT:
-                v = LayoutInflater .from(parent.getContext())
-                        .inflate(R.layout.event_block_element, parent, false);
-                BlockViewHolder bvh = new BlockViewHolder(v);
-                return bvh;
-        }
-        return null;
+        EventViewHolder evh = new EventViewHolder(v);
+        return evh;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case EVENT_ELEMENT:
-                EventViewHolder evh = (EventViewHolder) holder;
-                evh.setData(context, allEvents.at(position / 2));
-                break;
-            case BLOCK_ELEMENT:
-                BlockViewHolder bvh = (BlockViewHolder) holder;
-                int here = position / 2;
-                EventData before = allEvents.at(here), after = allEvents.at(here + 1);
-                Time duration = after.getStartTime().subtractTime( before.getStartTime().addTime(before.getDuration())  );
-                bvh.setData(context, duration);
-                break;
-        }
-
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        switch (position % 2) {
-            case 0: return EVENT_ELEMENT;
-            case 1: return BLOCK_ELEMENT;
-        }
-        return 0;
+    public void onBindViewHolder(EventViewHolder holder, int position) {
+        holder.setData(context, allBlocks.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return allEvents.count() * 2 - 1;
+        return allBlocks.size();
     }
 }

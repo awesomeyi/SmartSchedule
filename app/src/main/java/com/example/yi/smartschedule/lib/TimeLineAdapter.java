@@ -1,6 +1,7 @@
 package com.example.yi.smartschedule.lib;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.TimeViewActivity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Yi on 7/14/16.
@@ -43,10 +45,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             TextView hour_text = (TextView) my_view.findViewById(R.id.hour_text);
             View hour_view = (my_view.findViewById(R.id.hour_view));
             View hour_mark = my_view.findViewById(R.id.hour_mark);
+            Random r = new Random();
+            my_view.setBackgroundColor(Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
+
+            int finalheight = Util.pixel_to_dp(ctx, TimeViewActivity.L_BLOCK_HEIGHT);
+            my_view.getLayoutParams().height = finalheight;
+            Util.d("" + (hour_text.getLineHeight()));
 
             hour_text.setText("" + tb.startMark);
-            Util.d("" + Util.pixel_to_dp(ctx, TimeViewActivity.L_BLOCK_HEIGHT) + ", " + hour_text.getLineHeight());
-            hour_view.getLayoutParams().height = Util.pixel_to_dp(ctx, TimeViewActivity.L_BLOCK_HEIGHT) - hour_text.getLineHeight();
             switch (tb.mark) {
                 case -1:
                     hour_view.getLayoutParams().height = Util.pixel_to_dp(ctx, 0);

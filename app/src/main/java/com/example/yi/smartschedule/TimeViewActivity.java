@@ -32,8 +32,8 @@ public class TimeViewActivity extends AppCompatActivity {
         String title = "Meet Ryan";
         String description = "Meet Ryan near the corner of 5th Ave.\nHe's going to be selling you drugs so bring money.";
 
-        Time startTimes[] = { new Time(1, 00), new Time(2, 00), new Time(4, 00), new Time(5, 30), new Time(6, 00), new Time(10, 00)};
-        int minutes[] = {30, 40, 60, 20, 80, 30};
+        Time startTimes[] = { new Time(1, 00), new Time(2, 00), new Time(4, 00)};
+        int minutes[] = {60, 30, 120};
         EventData events[] = new EventData[minutes.length];
 
         for(int i = 0; i < minutes.length; ++i) {

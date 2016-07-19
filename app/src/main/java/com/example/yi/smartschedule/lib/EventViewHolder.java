@@ -3,6 +3,7 @@ package com.example.yi.smartschedule.lib;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,35 @@ import com.example.yi.smartschedule.TimeViewActivity;
  * Created by Yi on 7/13/16.
  */
 public class EventViewHolder extends RecyclerView.ViewHolder {
+
+    public static class EventBlock {
+        public EventData event;
+        public boolean visible;
+        public int height;
+
+        public EventBlock(EventData event, boolean visible) {
+            this.event = event;
+            this.visible = visible;
+            this.height = (int) Math.round(TimeViewActivity.L_BLOCK_HEIGHT * event.getDuration().getHours());
+        }
+
+        public EventBlock(Time duration, boolean visible) {
+            this(new EventData(null, duration, null, null), visible);
+        }
+
+        public EventBlock(int height) {
+            this.event = null;
+            this.height = height;
+            this.visible = false;
+        }
+        public int getHeight() {
+            return this.height;
+        }
+        public EventBlock setHeight(int height) {
+            this.height = height;
+            return this;
+        }
+    }
 
     //Top level view
     private View my_view;
@@ -40,14 +70,25 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         return String.format("%1$s - %2$s", start.formatStandard(), end.formatStandard());
     }
 
-    public void setData(Context ctx, EventData ed) {
-        title_text.setText(ed.getTitle());
-        Time endtime = ed.getStartTime().addTime(ed.getDuration());
-        duration_text.setText(this.durationText(ed.getStartTime(), endtime));
-        description_text.setText(ed.getDescription());
-
-        int finalHeight = (int) Math.round(blockHeight() * ed.getDuration().getHours());
+    public void setData(Context ctx, EventBlock eb) {
+        //Set dimensions
+        int finalHeight = eb.getHeight();
+        Util.d("" + Util.pixel_to_dp(ctx, finalHeight));
         my_view.getLayoutParams().height = Util.pixel_to_dp(ctx, finalHeight);
+
+        //Invisible / don't set text
+        if(!eb.visible) {
+            my_view.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        my_view.setVisibility(View.VISIBLE);
+
+        EventData event = eb.event;
+        title_text.setText(event.getTitle());
+        Time endtime = event.getStartTime().addTime(event.getDuration());
+        duration_text.setText(this.durationText(event.getStartTime(), endtime));
+        description_text.setText(event.getDescription());
         this.resize(finalHeight);
     }
 
