@@ -43,7 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
             EventBlock eventBlock = EventBlock.create().setVisibility(true).setHeight(event).setEvent(event);
             allBlocks.add(eventBlock); //Add the actual event
             dpcount += eventBlock.getHeight();
-            Util.d("Total dp: " + dpcount + " event: " + eventBlock.getHeight());
+            //Util.d("Total dp: " + dpcount + " event: " + eventBlock.getHeight());
 
             //Add the padding
             EventData before = allEvents.at(i), after = allEvents.at(i + 1);
@@ -73,7 +73,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
             }
             dpcount += paddingBlock.getHeight();
             allBlocks.add(paddingBlock);
-            Util.d("Total dp: " + dpcount + " padding: " + paddingBlock.getHeight());
+            //Util.d("Total dp: " + dpcount + " padding: " + paddingBlock.getHeight());
         }
 
         //Insert end padding

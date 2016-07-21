@@ -15,6 +15,10 @@ public class EventData implements Serializable {
     private String description = null;
     private PresetIcon icon = null;
 
+    public static EventData create() {
+        return new EventData();
+    }
+
     public EventData() { }
 
     public EventData(BasicTime startTime, BasicTime duration, String title, String description, PresetIcon icon) {

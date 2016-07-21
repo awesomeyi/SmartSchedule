@@ -48,7 +48,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     public void setData(Context ctx, EventBlock eb) {
         //Set dimensions
         int finalHeight = (int) eb.getHeight();
-        Util.d("" + Util.pixel_to_dp(ctx, finalHeight));
+        //Util.d("" + Util.pixel_to_dp(ctx, finalHeight));
         my_view.getLayoutParams().height = Util.pixel_to_dp(ctx, finalHeight);
 
         //Invisible / don't set text

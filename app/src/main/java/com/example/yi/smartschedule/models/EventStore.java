@@ -13,6 +13,8 @@ import java.util.Comparator;
  */
 public class EventStore {
 
+    //Comparators
+
     private static class c_EventData_start implements Comparator<EventData> {
 
         @Override
@@ -65,8 +67,8 @@ public class EventStore {
         byEnd.addAll(new ArrayList<>(Arrays.asList(events)));
         Collections.sort(byEnd, new c_EventData_end());
 
-        for(EventData e : byStart)
-            Util.d("ByStart: " + e.getStartTime().formatStandard() + "-" + e.getEndTime().formatStandard() + ",");
+//        for(EventData e : byStart)
+//            Util.d("ByStart: " + e.getStartTime().formatStandard() + "-" + e.getEndTime().formatStandard() + ",");
 //        for(EventData e : byEnd)
 //            Util.d("ByEnd: " + e.getStartTime().formatStandard() + "-" + e.getEndTime().formatStandard() + ",");
         return this;
@@ -89,13 +91,13 @@ public class EventStore {
 
     //Event at a certain time
     public EventData at(BasicTime time) {
-        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, EventData.create().setStartTime(time), new c_EventData_start_only());
         return this.at(idx);
     }
 
     //Which position is this event
     public int where(EventData event) {
-        int idx = Collections.binarySearch(byStart, new EventData(event.getStartTime(), null, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, EventData.create().setStartTime(event.getStartTime()), new c_EventData_start_only());
         EventData here = this.at(idx);
         if(here == null)
             return -1;
@@ -104,8 +106,8 @@ public class EventStore {
 
     //What event is happening at time
     public EventData happening(BasicTime time) {
-        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
-        Util.d("" + idx);
+        int idx = Collections.binarySearch(byStart, EventData.create().setStartTime(time), new c_EventData_start_only());
+        //Util.d("" + idx);
         EventData here = this.at(idx);
         if(here != null)
             return here;
@@ -120,9 +122,10 @@ public class EventStore {
         return null;
     }
 
+    //Are the start and end intervals within a range?
     public boolean startEndInInterval(BasicTime t1, BasicTime t2) {
         //Start time falls within range?
-        int idx = Collections.binarySearch(byStart, new EventData(t1, null, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, EventData.create().setStartTime(t1), new c_EventData_start_only());
         if(idx >= 0)
             return true;
         EventData next = this.at(-idx - 1);
@@ -131,7 +134,7 @@ public class EventStore {
         }
 
         //Endtimes fall within range?
-        idx = Collections.binarySearch(byEnd, new EventData(new BasicTime(0, 0), t1, null, null, null), new c_EventData_end_only());
+        idx = Collections.binarySearch(byEnd, EventData.create().setStartTime(new BasicTime(0, 0)).setDuration(t1), new c_EventData_end_only());
         if(idx >= 0)
             return true;
         next = this.at(-idx - 1);

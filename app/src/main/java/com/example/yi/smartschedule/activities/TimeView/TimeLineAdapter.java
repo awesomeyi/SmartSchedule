@@ -51,7 +51,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
 
             int finalheight = Util.pixel_to_dp(ctx, TimeViewActivity.FULL_HOUR_HEIGHT());
             my_view.getLayoutParams().height = finalheight;
-            Util.d("" + (hour_text.getLineHeight()));
+            //Util.d("" + (hour_text.getLineHeight()));
 
             hour_text.setText("" + BasicTime.milToStandardHours(tb.startMark));
             switch (tb.mark) {
