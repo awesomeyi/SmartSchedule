@@ -86,13 +86,13 @@ public class EventStore {
 
     //Event at a certain time
     public EventData at(Time time) {
-        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
         return this.at(idx);
     }
 
     //Which position is this event
     public int where(EventData event) {
-        int idx = Collections.binarySearch(byStart, new EventData(event.getStartTime(), null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, new EventData(event.getStartTime(), null, null, null, null), new c_EventData_start_only());
         EventData here = this.at(idx);
         if(here == null)
             return -1;
@@ -101,7 +101,7 @@ public class EventStore {
 
     //What event is happening at time
     public EventData happening(Time time) {
-        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
         Util.d("" + idx);
         EventData here = this.at(idx);
         if(here != null)
@@ -119,7 +119,7 @@ public class EventStore {
 
     public boolean startEndInInterval(Time t1, Time t2) {
         //Start time falls within range?
-        int idx = Collections.binarySearch(byStart, new EventData(t1, null, null, null), new c_EventData_start_only());
+        int idx = Collections.binarySearch(byStart, new EventData(t1, null, null, null, null), new c_EventData_start_only());
         if(idx >= 0)
             return true;
         EventData next = this.at(-idx - 1);
@@ -128,7 +128,7 @@ public class EventStore {
         }
 
         //Endtimes fall within range?
-        idx = Collections.binarySearch(byEnd, new EventData(new Time(0, 0), t1, null, null), new c_EventData_end_only());
+        idx = Collections.binarySearch(byEnd, new EventData(new Time(0, 0), t1, null, null, null), new c_EventData_end_only());
         if(idx >= 0)
             return true;
         next = this.at(-idx - 1);

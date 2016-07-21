@@ -10,14 +10,16 @@ public class EventData implements Serializable {
     private Time duration = null;
     private String title = null;
     private String description = null;
+    private PresetIcon icon = null;
 
     public EventData() { }
 
-    public EventData(Time startTime, Time duration, String title, String description) {
+    public EventData(Time startTime, Time duration, String title, String description, PresetIcon icon) {
         this.startTime = startTime;
         this.duration= duration;
         this.title = title;
         this.description = description;
+        this.icon = icon;
     }
 
     public EventData setStartTime(Time startTime) {
@@ -54,5 +56,13 @@ public class EventData implements Serializable {
     }
     public String getDescription() {
         return this.description;
+    }
+
+    public PresetIcon getIcon() {
+        return this.icon;
+    }
+    public EventData setIcon(PresetIcon icon) {
+        this.icon = icon;
+        return this;
     }
 }

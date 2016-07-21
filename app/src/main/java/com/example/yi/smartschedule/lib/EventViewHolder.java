@@ -15,35 +15,6 @@ import com.example.yi.smartschedule.TimeViewActivity;
  */
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
-    public static class EventBlock {
-        public EventData event;
-        public boolean visible;
-        public int height;
-
-        public EventBlock(EventData event, boolean visible) {
-            this.event = event;
-            this.visible = visible;
-            this.height = (int) Math.round(TimeViewActivity.L_BLOCK_HEIGHT * event.getDuration().getHours());
-        }
-
-        public EventBlock(Time duration, boolean visible) {
-            this(new EventData(null, duration, null, null), visible);
-        }
-
-        public EventBlock(int height) {
-            this.event = null;
-            this.height = height;
-            this.visible = false;
-        }
-        public int getHeight() {
-            return this.height;
-        }
-        public EventBlock setHeight(int height) {
-            this.height = height;
-            return this;
-        }
-    }
-
     //Top level view
     private View my_view;
 
@@ -72,30 +43,36 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
     public void setData(Context ctx, EventBlock eb) {
         //Set dimensions
-        int finalHeight = eb.getHeight();
+        int finalHeight = (int) eb.getHeight();
         Util.d("" + Util.pixel_to_dp(ctx, finalHeight));
         my_view.getLayoutParams().height = Util.pixel_to_dp(ctx, finalHeight);
 
         //Invisible / don't set text
-        if(!eb.visible) {
+        if(!eb.getVisibility()) {
             my_view.setVisibility(View.INVISIBLE);
             return;
         }
 
+        //Set everything to visible
         my_view.setVisibility(View.VISIBLE);
+        title_text.setVisibility(View.VISIBLE);
+        duration_text.setVisibility(View.VISIBLE);
+        description_text.setVisibility(View.VISIBLE);
 
-        EventData event = eb.event;
+        //Set actual event data
+        EventData event = eb.getEvent();
         title_text.setText(event.getTitle());
         Time endtime = event.getStartTime().addTime(event.getDuration());
         duration_text.setText(this.durationText(event.getStartTime(), endtime));
         description_text.setText(event.getDescription());
+        event_icon.setImageResource(event.getIcon().getIconId(ctx) );
         this.resize(finalHeight);
     }
 
     private void resize(int height) {
 
         // >= 2 hours
-        if(height >= 2 * blockHeight()) {
+        if(height >= 2 * blockHeight() - minGap()) {
             int dTextLine = (height - 2 * blockHeight()) / 20 + 1;
             description_text.setMaxLines(dTextLine);
             return;
@@ -103,14 +80,14 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
         //1 - 2 hours
         description_text.setVisibility(View.GONE);
-        if(height >= 1 * blockHeight()) {
+        if(height >= 1 * blockHeight() - minGap()) {
             return;
         }
 
         //.5 - 1 hours
         duration_text.setVisibility(View.GONE);
         event_icon.getLayoutParams().width = event_icon.getLayoutParams().height;
-        if(height >= .5 * blockHeight()) {
+        if(height >= .5 * blockHeight() - minGap()) {
             return;
         }
 
@@ -118,7 +95,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         event_icon_wrapper.setVisibility(View.GONE);
         title_text.setText("• • •");
         title_text.setTextSize(height - 8); //4 dp padding
-        if(height >= .25 * blockHeight()) {
+        if(height >= .25 * blockHeight() - minGap()) {
             return;
         }
 
@@ -127,6 +104,9 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     }
 
     private int blockHeight() {
-        return TimeViewActivity.L_BLOCK_HEIGHT;
+        return TimeViewActivity.FULL_HOUR_HEIGHT();
+    }
+    private double minGap() {
+        return 2 * EventAdapter.getMinGap();
     }
 }

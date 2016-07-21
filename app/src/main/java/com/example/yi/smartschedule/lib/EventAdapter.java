@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
+import com.example.yi.smartschedule.TimeViewActivity;
 
 import java.util.ArrayList;
 
@@ -15,35 +16,73 @@ import java.util.ArrayList;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
-    private static final int EVENT_ELEMENT = 0;
-    private static final int BLOCK_ELEMENT = 1;
-
     private Context context;
     private EventStore allEvents;
-    private ArrayList<EventViewHolder.EventBlock> allBlocks = new ArrayList<>();
+    private ArrayList<EventBlock> allBlocks = new ArrayList<>();
+
+    //Minimum gap between elements
+    public static double getMinGap() {
+        return 1.5; //dp
+    }
 
     public EventAdapter(EventStore allEvents) {
         this.allEvents = allEvents;
 
         //Insert start padding
-        allBlocks.add(new EventViewHolder.EventBlock(15));
+        allBlocks.add(EventBlock.create().setHeight(15));
 
-        for(int i = 0; i < allEvents.count() - 1; ++i) {
+        int dpcount = 0; //Keep a running count of DP
+        for(int i = 0; i < allEvents.count(); ++i) {
+
             EventData event = allEvents.at(i);
-            allBlocks.add(new EventViewHolder.EventBlock(event, true)); //Add the actual event
+            EventBlock eventBlock = EventBlock.create().setVisibility(true).setHeight(event).setEvent(event);
+            allBlocks.add(eventBlock); //Add the actual event
+            dpcount += eventBlock.getHeight();
+            Util.d("Total dp: " + dpcount + " event: " + eventBlock.getHeight());
 
             //Add the padding
             EventData before = allEvents.at(i), after = allEvents.at(i + 1);
-            Time duration = after.getStartTime().subtractTime( before.getStartTime().addTime(before.getDuration())  );
-            allBlocks.add(new EventViewHolder.EventBlock(duration, false));
+            Time duration;
+            EventBlock paddingBlock = EventBlock.create();
+
+            //Last event
+            if(after == null) {
+                duration = ( new Time((int) Math.ceil(before.getEndTime().getHours()), 0) ).subtractTime(before.getEndTime());
+                paddingBlock.setHeight(duration);
+            } else {
+                duration = after.getStartTime().subtractTime(before.getStartTime().addTime(before.getDuration()));
+                paddingBlock.setHeight(duration);
+
+                //Adjust padding so its exact
+                if(after.getStartTime().getMinutes() % 30 == 0) {
+
+                    //We fuzz fdp into a multiple of L_BLOCK_HEIGHT / 2
+                    int fdp = dpcount + (int) paddingBlock.getHeight();
+                    int halfBlock = TimeViewActivity.HALF_HOUR_HEIGHT();
+                    double scale = (double) fdp / halfBlock;
+                    scale = Math.round(scale);
+                    int adjusted = (int) (scale * halfBlock);
+
+                    paddingBlock.setHeight(adjusted - dpcount);
+                }
+            }
+            dpcount += paddingBlock.getHeight();
+            allBlocks.add(paddingBlock);
+            Util.d("Total dp: " + dpcount + " padding: " + paddingBlock.getHeight());
         }
-        //Insert last event
-        EventData last = allEvents.last();
-        allBlocks.add(new EventViewHolder.EventBlock(last, true));
-        //End padding
-        Time duration = ( new Time((int) Math.ceil(last.getEndTime().getHours()), 0) ).subtractTime(last.getEndTime());
-        allBlocks.add(new EventViewHolder.EventBlock(duration, false));
-        allBlocks.add(new EventViewHolder.EventBlock(15));
+
+        //Insert end padding
+        allBlocks.add(EventBlock.create().setHeight(15));
+
+        for(int i = 1; i < allBlocks.size() - 1; ++i) {
+            EventBlock block = allBlocks.get(i);
+            if(!block.getVisibility() && block.getHeight() == 0) {
+                EventBlock before = allBlocks.get(i - 1), after = allBlocks.get(i + 1);
+                allBlocks.get(i - 1).setHeight(before.getHeight() - getMinGap());
+                allBlocks.get(i).setHeight(getMinGap() * 2);
+                allBlocks.get(i + 1).setHeight(after.getHeight() - getMinGap());
+            }
+        }
     }
 
     @Override

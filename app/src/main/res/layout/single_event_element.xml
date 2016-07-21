@@ -38,6 +38,7 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:src="@drawable/food_event_icon"
+            android:tint="@color/backgroundLight"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
@@ -57,6 +58,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/backgroundLight"
             android:text="Eat out"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:textSize="22sp" />
         <TextView
             android:id="@+id/duration_text"
@@ -78,7 +82,5 @@
             android:singleLine="false"
             android:textSize="18sp" />
     </LinearLayout>
-
-
 
 </LinearLayout>

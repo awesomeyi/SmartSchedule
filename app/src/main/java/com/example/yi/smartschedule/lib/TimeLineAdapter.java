@@ -48,7 +48,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             //Random r = new Random();
             //my_view.setBackgroundColor(Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
 
-            int finalheight = Util.pixel_to_dp(ctx, TimeViewActivity.L_BLOCK_HEIGHT);
+            int finalheight = Util.pixel_to_dp(ctx, TimeViewActivity.FULL_HOUR_HEIGHT());
             my_view.getLayoutParams().height = finalheight;
             Util.d("" + (hour_text.getLineHeight()));
 
