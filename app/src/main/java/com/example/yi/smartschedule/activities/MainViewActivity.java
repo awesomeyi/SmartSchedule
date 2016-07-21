@@ -1,18 +1,16 @@
-package com.example.yi.smartschedule;
+package com.example.yi.smartschedule.activities;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.lib.LocationService;
-import com.example.yi.smartschedule.lib.MyPhoneStateListener;
 
 public class MainViewActivity extends AppCompatActivity implements View.OnClickListener {
 

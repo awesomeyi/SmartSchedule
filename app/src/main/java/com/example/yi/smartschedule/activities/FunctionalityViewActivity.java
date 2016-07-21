@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule;
+package com.example.yi.smartschedule.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.provider.Settings.System;
 import android.widget.Toast;
 
+import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.lib.Util;
 

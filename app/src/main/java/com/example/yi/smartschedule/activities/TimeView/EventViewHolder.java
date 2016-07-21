@@ -1,14 +1,18 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.activities.TimeView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.TimeViewActivity;
+import com.example.yi.smartschedule.activities.TimeView.EventAdapter;
+import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.Util;
+import com.example.yi.smartschedule.models.EventData;
+import com.example.yi.smartschedule.models.TimeView.EventBlock;
 
 /**
  * Created by Yi on 7/13/16.
@@ -37,7 +41,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         event_icon_wrapper = v.findViewById(R.id.event_icon_wrapper);
     }
 
-    private String durationText(Time start, Time end) {
+    private String durationText(BasicTime start, BasicTime end) {
         return String.format("%1$s - %2$s", start.formatStandard(), end.formatStandard());
     }
 
@@ -62,7 +66,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         //Set actual event data
         EventData event = eb.getEvent();
         title_text.setText(event.getTitle());
-        Time endtime = event.getStartTime().addTime(event.getDuration());
+        BasicTime endtime = event.getStartTime().addTime(event.getDuration());
         duration_text.setText(this.durationText(event.getStartTime(), endtime));
         description_text.setText(event.getDescription());
         event_icon.setImageResource(event.getIcon().getIconId(ctx) );

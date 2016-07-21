@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="30dp"
+    android:layout_marginLeft="45dp"
     android:background="@color/colorPrimary"
-    tools:context=".SingleEventElement"
     android:orientation="horizontal">
 
     <RelativeLayout

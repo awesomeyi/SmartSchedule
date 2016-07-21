@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.activities.TimeView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.TimeViewActivity;
+import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.Util;
+import com.example.yi.smartschedule.models.EventData;
+import com.example.yi.smartschedule.models.EventStore;
+import com.example.yi.smartschedule.models.TimeView.EventBlock;
 
 import java.util.ArrayList;
 
@@ -42,12 +47,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
             //Add the padding
             EventData before = allEvents.at(i), after = allEvents.at(i + 1);
-            Time duration;
+            BasicTime duration;
             EventBlock paddingBlock = EventBlock.create();
 
             //Last event
             if(after == null) {
-                duration = ( new Time((int) Math.ceil(before.getEndTime().getHours()), 0) ).subtractTime(before.getEndTime());
+                duration = ( new BasicTime((int) Math.ceil(before.getEndTime().getHours()), 0) ).subtractTime(before.getEndTime());
                 paddingBlock.setHeight(duration);
             } else {
                 duration = after.getStartTime().subtractTime(before.getStartTime().addTime(before.getDuration()));

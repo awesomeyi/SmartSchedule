@@ -1,6 +1,8 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.models.TimeView;
 
-import com.example.yi.smartschedule.TimeViewActivity;
+import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.models.EventData;
 
 /**
  * Created by Yi on 7/20/16.
@@ -33,7 +35,7 @@ public class EventBlock {
         return this.setHeight(event.getDuration());
     }
     //Set height according to duration
-    public EventBlock setHeight(Time duration) {
+    public EventBlock setHeight(BasicTime duration) {
         this.height = (int) Math.round(TimeViewActivity.FULL_HOUR_HEIGHT() * duration.getHours());
         return this;
     }

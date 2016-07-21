@@ -1,4 +1,7 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.models;
+
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,7 +88,7 @@ public class EventStore {
     }
 
     //Event at a certain time
-    public EventData at(Time time) {
+    public EventData at(BasicTime time) {
         int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
         return this.at(idx);
     }
@@ -100,7 +103,7 @@ public class EventStore {
     }
 
     //What event is happening at time
-    public EventData happening(Time time) {
+    public EventData happening(BasicTime time) {
         int idx = Collections.binarySearch(byStart, new EventData(time, null, null, null, null), new c_EventData_start_only());
         Util.d("" + idx);
         EventData here = this.at(idx);
@@ -117,7 +120,7 @@ public class EventStore {
         return null;
     }
 
-    public boolean startEndInInterval(Time t1, Time t2) {
+    public boolean startEndInInterval(BasicTime t1, BasicTime t2) {
         //Start time falls within range?
         int idx = Collections.binarySearch(byStart, new EventData(t1, null, null, null, null), new c_EventData_start_only());
         if(idx >= 0)
@@ -128,7 +131,7 @@ public class EventStore {
         }
 
         //Endtimes fall within range?
-        idx = Collections.binarySearch(byEnd, new EventData(new Time(0, 0), t1, null, null, null), new c_EventData_end_only());
+        idx = Collections.binarySearch(byEnd, new EventData(new BasicTime(0, 0), t1, null, null, null), new c_EventData_end_only());
         if(idx >= 0)
             return true;
         next = this.at(-idx - 1);
@@ -139,7 +142,7 @@ public class EventStore {
     }
 
     //Event between a certain time
-    public boolean exists(Time t1, Time t2) {
+    public boolean exists(BasicTime t1, BasicTime t2) {
         //Does the event enclose t1 and t2? and are the start and end times within the interval?
         if(this.startEndInInterval(t1, t2) && this.happening(t1) != null)
             return true;

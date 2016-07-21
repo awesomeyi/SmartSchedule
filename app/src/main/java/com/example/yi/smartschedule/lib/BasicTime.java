@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  * Created by Yi on 7/11/16.
  */
-public class Time implements Serializable, Comparable<Time> {
+public class BasicTime implements Serializable, Comparable<BasicTime> {
     private int hours;
     private int minutes;
 
-    public Time(int hours, int minutes) {
+    public BasicTime(int hours, int minutes) {
         this.hours = hours;
         this.minutes = minutes;
         this.hours += this.minutes / 60;
@@ -17,18 +17,18 @@ public class Time implements Serializable, Comparable<Time> {
         this.hours %= 24;
     }
 
-    public Time addTime(Time t2) {
+    public BasicTime addTime(BasicTime t2) {
         return addTime(t2.hours, t2.minutes);
     }
-    public Time addTime(int hours, int minutes) {
-        return new Time(this.hours + hours, this.minutes + minutes);
+    public BasicTime addTime(int hours, int minutes) {
+        return new BasicTime(this.hours + hours, this.minutes + minutes);
     }
 
-    public Time subtractTime(Time t2) {
+    public BasicTime subtractTime(BasicTime t2) {
         return subtractTime(t2.hours, t2.minutes);
     }
-    public Time subtractTime(int hours, int minutes) {
-        return new Time(this.hours - hours, this.minutes - minutes);
+    public BasicTime subtractTime(int hours, int minutes) {
+        return new BasicTime(this.hours - hours, this.minutes - minutes);
     }
 
     public int getMinutes() {
@@ -52,7 +52,7 @@ public class Time implements Serializable, Comparable<Time> {
     }
 
     @Override
-    public int compareTo(Time time) {
+    public int compareTo(BasicTime time) {
         return ((Integer) this.getMinutes()).compareTo((Integer) time.getMinutes());
     }
 }

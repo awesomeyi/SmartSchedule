@@ -1,4 +1,7 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.models;
+
+import com.example.yi.smartschedule.lib.PresetIcon;
+import com.example.yi.smartschedule.lib.BasicTime;
 
 import java.io.Serializable;
 
@@ -6,15 +9,15 @@ import java.io.Serializable;
  * Created by Yi on 7/13/16.
  */
 public class EventData implements Serializable {
-    private Time startTime = null;
-    private Time duration = null;
+    private BasicTime startTime = null;
+    private BasicTime duration = null;
     private String title = null;
     private String description = null;
     private PresetIcon icon = null;
 
     public EventData() { }
 
-    public EventData(Time startTime, Time duration, String title, String description, PresetIcon icon) {
+    public EventData(BasicTime startTime, BasicTime duration, String title, String description, PresetIcon icon) {
         this.startTime = startTime;
         this.duration= duration;
         this.title = title;
@@ -22,23 +25,23 @@ public class EventData implements Serializable {
         this.icon = icon;
     }
 
-    public EventData setStartTime(Time startTime) {
+    public EventData setStartTime(BasicTime startTime) {
         this.startTime = startTime;
         return this;
     }
-    public Time getStartTime() {
+    public BasicTime getStartTime() {
         return this.startTime;
     }
 
-    public Time getEndTime() {
+    public BasicTime getEndTime() {
         return this.getStartTime().addTime(this.getDuration());
     }
 
-    public EventData setDuration(Time duration) {
+    public EventData setDuration(BasicTime duration) {
         this.duration = duration;
         return this;
     }
-    public Time getDuration() {
+    public BasicTime getDuration() {
         return this.duration;
     }
 

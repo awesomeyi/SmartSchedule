@@ -1,7 +1,6 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.activities.TimeView;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.TimeViewActivity;
+import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.Util;
+import com.example.yi.smartschedule.models.EventStore;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Yi on 7/14/16.
@@ -52,7 +53,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             my_view.getLayoutParams().height = finalheight;
             Util.d("" + (hour_text.getLineHeight()));
 
-            hour_text.setText("" + Time.milToStandardHours(tb.startMark));
+            hour_text.setText("" + BasicTime.milToStandardHours(tb.startMark));
             switch (tb.mark) {
                 case -1:
                     hour_mark.setVisibility(View.INVISIBLE);
@@ -75,7 +76,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
 
         while(cur != end) {
             TimeBlock tb = new TimeBlock(cur, 0);
-            if( allEvents.startEndInInterval(new Time(cur, 1), new Time(cur, 59)) ) {
+            if( allEvents.startEndInInterval(new BasicTime(cur, 1), new BasicTime(cur, 59)) ) {
                 tb.mark = 1;
             }
             allTimes.add(tb);
