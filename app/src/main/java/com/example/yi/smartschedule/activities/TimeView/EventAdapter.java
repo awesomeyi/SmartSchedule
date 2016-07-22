@@ -22,8 +22,9 @@ import java.util.ArrayList;
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     private Context context;
-    private EventStore allEvents;
     private ArrayList<EventBlock> allBlocks = new ArrayList<>();
+    private ArrayList<EventStore> allEvents = new ArrayList<>();
+    private int dpcount = 0;
 
     //Minimum gap between elements
     public static double getMinGap() {
@@ -31,44 +32,51 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     }
 
     public EventAdapter(EventStore allEvents) {
-        this.allEvents = allEvents;
-
         //Insert start padding
         allBlocks.add(EventBlock.create().setHeight(15));
+        this.addDay(allEvents, allEvents.at(0).getStartTime());
+    }
 
-        int dpcount = 0; //Keep a running count of DP
-        for(int i = 0; i < allEvents.count(); ++i) {
+    public EventAdapter addDay(EventStore today, BasicTime starttime) {
 
-            EventData event = allEvents.at(i);
+        //Insert start pad from starttime
+        if(today.count() > 0) {
+            EventBlock startPad = EventBlock.create();
+            EventData start = today.first();
+            BasicTime duration = start.getStartTime().subtractTime(starttime);
+            startPad.setHeight(duration);
+
+            if(start.getStartTime().getMinutes() % 30 == 0) {
+                this.fudgePadding(startPad);
+            }
+            allBlocks.add(startPad);
+        }
+
+        for(int i = 0; i < today.count(); ++i) {
+
+            EventData event = today.at(i);
             EventBlock eventBlock = EventBlock.create().setVisibility(true).setHeight(event).setEvent(event);
             allBlocks.add(eventBlock); //Add the actual event
             dpcount += eventBlock.getHeight();
             //Util.d("Total dp: " + dpcount + " event: " + eventBlock.getHeight());
 
             //Add the padding
-            EventData before = allEvents.at(i), after = allEvents.at(i + 1);
+            EventData before = today.at(i), after = today.at(i + 1);
             BasicTime duration;
             EventBlock paddingBlock = EventBlock.create();
 
-            //Last event
+            //Last event pad to the last hour
             if(after == null) {
                 duration = ( new BasicTime((int) Math.ceil(before.getEndTime().getHours()), 0) ).subtractTime(before.getEndTime());
                 paddingBlock.setHeight(duration);
+                this.fudgePadding(paddingBlock);
             } else {
-                duration = after.getStartTime().subtractTime(before.getStartTime().addTime(before.getDuration()));
+                duration = after.getStartTime().subtractTime(before.getEndTime());
                 paddingBlock.setHeight(duration);
 
                 //Adjust padding so its exact
                 if(after.getStartTime().getMinutes() % 30 == 0) {
-
-                    //We fuzz fdp into a multiple of L_BLOCK_HEIGHT / 2
-                    int fdp = dpcount + (int) paddingBlock.getHeight();
-                    int halfBlock = TimeViewActivity.HALF_HOUR_HEIGHT();
-                    double scale = (double) fdp / halfBlock;
-                    scale = Math.round(scale);
-                    int adjusted = (int) (scale * halfBlock);
-
-                    paddingBlock.setHeight(adjusted - dpcount);
+                    this.fudgePadding(paddingBlock);
                 }
             }
             dpcount += paddingBlock.getHeight();
@@ -76,9 +84,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
             //Util.d("Total dp: " + dpcount + " padding: " + paddingBlock.getHeight());
         }
 
-        //Insert end padding
-        allBlocks.add(EventBlock.create().setHeight(15));
+        allEvents.add(today);
 
+        //Space out events
         for(int i = 1; i < allBlocks.size() - 1; ++i) {
             EventBlock block = allBlocks.get(i);
             if(!block.getVisibility() && block.getHeight() == 0) {
@@ -88,6 +96,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
                 allBlocks.get(i + 1).setHeight(after.getHeight() - getMinGap());
             }
         }
+        return this;
+    }
+
+    //Rounding errors can occur, this is why we fudge the padding to an exact multiple of HALF_HOUR_BLOCK()
+    private void fudgePadding(EventBlock paddingBlock) {
+        int fdp = dpcount + (int) paddingBlock.getHeight();
+        int halfBlock = TimeViewActivity.HALF_HOUR_HEIGHT();
+        double scale = (double) fdp / halfBlock;
+        scale = Math.round(scale);
+        int adjusted = (int) (scale * halfBlock);
+
+        paddingBlock.setHeight(adjusted - dpcount);
+    }
+
+    public int dataCount() {
+        return allBlocks.size();
     }
 
     @Override

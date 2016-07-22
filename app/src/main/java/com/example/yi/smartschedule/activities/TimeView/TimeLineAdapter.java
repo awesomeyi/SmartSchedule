@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHolder> {
 
     private Context context;
-    private EventStore allEvents;
+    private ArrayList<EventStore> allEvents = new ArrayList<>();
     private ArrayList<TimeBlock> allTimes = new ArrayList<>();
 
     private static class TimeBlock {
@@ -70,19 +70,26 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
     }
 
     public TimeLineAdapter(EventStore allEvents) {
-        this.allEvents = allEvents;
-        int cur = (int) Math.floor(allEvents.first().getStartTime().getHours());
-        int end = (int) Math.ceil(allEvents.last().getEndTime().getHours()) + 1;
+        this.addDay(allEvents, allEvents.at(0).getStartTime());
+    }
+
+    public TimeLineAdapter addDay(EventStore today, BasicTime starttime) {
+        int cur = (int) Math.floor(starttime.getHours());
+        int end = (int) Math.ceil(today.last().getEndTime().getHours());
 
         while(cur != end) {
             TimeBlock tb = new TimeBlock(cur, 0);
-            if( allEvents.startEndInInterval(new BasicTime(cur, 1), new BasicTime(cur, 59)) ) {
+            if( today.startEndInInterval(new BasicTime(cur, 1), new BasicTime(cur, 59)) ) {
                 tb.mark = 1;
             }
             allTimes.add(tb);
             cur += 1;
         }
-        allTimes.get(allTimes.size() - 1).mark = -1;
+        return this;
+    }
+
+    public int dataCount() {
+        return allTimes.size();
     }
 
     @Override

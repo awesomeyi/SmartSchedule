@@ -75,11 +75,11 @@ public class EventStore {
     }
 
     public EventData first() {
-        return byStart.get(0);
+        return this.at(0);
     }
 
     public EventData last() {
-        return byEnd.get(byEnd.size() - 1);
+        return this.at(byEnd.size() - 1);
     }
 
     //Sequential at: position by start

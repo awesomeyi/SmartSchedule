@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.yi.smartschedule.R;
+import com.example.yi.smartschedule.activities.TimeView.EndlessScrollListener;
 import com.example.yi.smartschedule.activities.TimeView.EventAdapter;
+import com.example.yi.smartschedule.lib.Util;
+import com.example.yi.smartschedule.models.DateManager;
 import com.example.yi.smartschedule.models.EventData;
 import com.example.yi.smartschedule.models.EventStore;
 import com.example.yi.smartschedule.lib.PresetIcon;
@@ -46,17 +49,34 @@ public class TimeViewActivity extends AppCompatActivity {
         };
 
         EventStore eventStore = new EventStore(events);
-        TimeLineAdapter timeLineAdapter = new TimeLineAdapter(eventStore);
-        EventAdapter eventAdapter = new EventAdapter(eventStore);
+        final TimeLineAdapter timeLineAdapter = new TimeLineAdapter(eventStore);
+        final EventAdapter eventAdapter = new EventAdapter(eventStore);
 
         final @AligningRecyclerView.AlignOrientation int orientation;
         orientation = AligningRecyclerView.ALIGN_ORIENTATION_VERTICAL;
 
         time_line_list.setAdapter(timeLineAdapter);
-        time_line_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager timeLineLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        time_line_list.setLayoutManager(timeLineLayout);
 
         main_event_list.setAdapter(eventAdapter);
-        main_event_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager eventLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        main_event_list.setLayoutManager(eventLayout);
+
+        time_line_list.addOnScrollListener(new EndlessScrollListener(timeLineLayout) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                Util.d("sdfasdf");
+                //Insert times
+                int cursize = timeLineAdapter.getItemCount();
+                timeLineAdapter.addDay(DateManager.getEvents(null), new BasicTime(0, 0));
+                timeLineAdapter.notifyItemRangeInserted(cursize, timeLineAdapter.dataCount());
+
+                cursize = eventAdapter.getItemCount();
+                eventAdapter.addDay(DateManager.getEvents(null), new BasicTime(0, 0));
+                eventAdapter.notifyItemRangeInserted(cursize, eventAdapter.dataCount());
+            }
+        });
 
         AlignmentManager.join(orientation, time_line_list, main_event_list);
     }
