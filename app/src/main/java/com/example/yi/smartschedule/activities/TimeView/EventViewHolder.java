@@ -47,7 +47,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
     public void setData(Context ctx, EventBlock eb) {
         //Set dimensions
-        int finalHeight = (int) eb.getHeight();
+        double finalHeight = eb.getHeight();
         //Util.d("" + Util.pixel_to_dp(ctx, finalHeight));
         my_view.getLayoutParams().height = Util.pixel_to_dp(ctx, finalHeight);
 
@@ -70,7 +70,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         duration_text.setText(this.durationText(event.getStartTime(), endtime));
         description_text.setText(event.getDescription());
         event_icon.setImageResource(event.getIcon().getIconId(ctx) );
-        this.resize(finalHeight);
+        this.resize((int) finalHeight);
     }
 
     private void resize(int height) {

@@ -67,7 +67,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
             //Last event pad to the last hour
             if(after == null) {
-                duration = ( new BasicTime((int) Math.ceil(before.getEndTime().getHours()), 0) ).subtractTime(before.getEndTime());
+                duration = ( new BasicTime(24, 0) ).subtractTime(before.getEndTime()).abs();
                 paddingBlock.setHeight(duration);
                 this.fudgePadding(paddingBlock);
             } else {

@@ -75,15 +75,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
 
     public TimeLineAdapter addDay(EventStore today, BasicTime starttime) {
         int cur = (int) Math.floor(starttime.getHours());
-        int end = (int) Math.ceil(today.last().getEndTime().getHours());
+        int end = 11;
 
-        while(cur != end) {
+        for(; cur <= end; ++cur) {
             TimeBlock tb = new TimeBlock(cur, 0);
             if( today.startEndInInterval(new BasicTime(cur, 1), new BasicTime(cur, 59)) ) {
                 tb.mark = 1;
             }
             allTimes.add(tb);
-            cur += 1;
         }
         return this;
     }

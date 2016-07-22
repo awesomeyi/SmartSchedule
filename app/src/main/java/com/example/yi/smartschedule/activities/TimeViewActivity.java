@@ -66,7 +66,6 @@ public class TimeViewActivity extends AppCompatActivity {
         time_line_list.addOnScrollListener(new EndlessScrollListener(timeLineLayout) {
             @Override
             public void onLoadMore(int currentPage) {
-                Util.d("sdfasdf");
                 //Insert times
                 int cursize = timeLineAdapter.getItemCount();
                 timeLineAdapter.addDay(DateManager.getEvents(null), new BasicTime(0, 0));

@@ -14,7 +14,6 @@ public class BasicTime implements Serializable, Comparable<BasicTime> {
         this.minutes = minutes;
         this.hours += this.minutes / 60;
         this.minutes %= 60;
-        this.hours %= 24;
     }
 
     public BasicTime addTime(BasicTime t2) {
@@ -29,6 +28,10 @@ public class BasicTime implements Serializable, Comparable<BasicTime> {
     }
     public BasicTime subtractTime(int hours, int minutes) {
         return new BasicTime(this.hours - hours, this.minutes - minutes);
+    }
+
+    public BasicTime abs() {
+        return new BasicTime(0, Math.abs(this.getMinutes()));
     }
 
     public int getMinutes() {
