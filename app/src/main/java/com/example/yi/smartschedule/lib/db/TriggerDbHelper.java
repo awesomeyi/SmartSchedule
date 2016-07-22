@@ -1,9 +1,9 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.lib.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.yi.smartschedule.lib.TriggerContract.TriggerEntry;
+import com.example.yi.smartschedule.lib.db.TriggerContract.TriggerEntry;
 
 /**
  * Created by jackphillips on 7/15/16.

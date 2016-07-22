@@ -9,9 +9,8 @@ import android.location.Location;
 import android.media.AudioManager;
 import android.provider.Settings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.example.yi.smartschedule.lib.db.TriggerContract;
+import com.example.yi.smartschedule.lib.db.TriggerDbHelper;
 
 /**
  * Created by jackphillips on 7/15/16.
@@ -19,6 +18,15 @@ import java.util.Map;
 public class Functionality {
     private SQLiteDatabase db;
     private Context context;
+
+    public static final String SILENCE_PHONE = "silencePhone";
+    public static final String UNSILENCE_PHONE = "unSilencePhone";
+    public static final String VIBERATE_PHONE = "ringerViberatePhone";
+    public static final String SET_BRITNESS = "setBrightness";
+
+    public static final String TRIGGER_GPS_ARIVE = "GPS";
+    public static final String TRIGGER_GPS_LEAVE = "GPSleave";
+    public static final String TRIGGER_PHONECALL = "phoneCall";
 
     public Functionality(Context context){
         TriggerDbHelper mDbHelper = new TriggerDbHelper(context);
@@ -36,8 +44,21 @@ public class Functionality {
                 "null",
                 values);
     }
+    public void addTrigger(String type, String addtionalInfo, String actions, int value){
+        ContentValues values = new ContentValues();
+        values.put(TriggerContract.TriggerEntry.COLUMN_NAME_TYPE, type);
+        values.put(TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO, addtionalInfo);
+        values.put(TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS, actions + " " + value);
+
+
+        long newRowId = db.insert(
+                TriggerContract.TriggerEntry.TABLE_NAME,
+                "null",
+                values);
+    }
+
     public void phoneTrigger(String phoneNumber){
-        Cursor c = querry("phoneCall");
+        Cursor c = querry(TRIGGER_PHONECALL);
         c.moveToFirst();
         for(int i = 0; i < c.getCount(); i++){
             String type = c.getString(
@@ -58,8 +79,8 @@ public class Functionality {
     }
 
     public void gpsTrigger(Location l) {
-        Cursor c = querry("GPS");
-        Cursor leave = querry("GPSleave");
+        Cursor c = querry(TRIGGER_GPS_ARIVE);
+        Cursor leave = querry(TRIGGER_GPS_LEAVE);
         c.moveToFirst();
         for(int i = 0; i < c.getCount(); i++){
             String actions = c.getString(
@@ -99,12 +120,14 @@ public class Functionality {
         endPoint.setLatitude(Double.parseDouble(latlong[0]));
         return endPoint;
     }
+
     public Cursor querry(String type) {
 
         String[] projection = {
                 TriggerContract.TriggerEntry._ID,
                 TriggerContract.TriggerEntry.COLUMN_NAME_TYPE,
                 TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO,
+                TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS,
                 TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS
         };
         Cursor c = db.query(
@@ -131,23 +154,38 @@ public class Functionality {
     public void doActions(String actions) {
         String action[] = actions.split(",");
         for(int i =0; i < action.length; i++){
-            doAction(action[i]);
+            if((action[i].startsWith("set"))) {
+                String [] actval = action[i].split(" ");
+                doAction(actval[0], Integer.parseInt(actval[1]));
+            }
+            else {
+                doAction(action[i], 0);
+            }
         }
     }
 
-    public void doAction(String action){
+    public void doAction(String action, int value){
         switch (action){
-            case "silencePhone":
+            case SILENCE_PHONE:
                 silencePhone(context);
                 break;
-            case "unSilencePhone":
+            case UNSILENCE_PHONE:
                 unSilencePhone(context);
                 break;
-            case "ringerViberatePhone":
+            case VIBERATE_PHONE:
                 ringerViberatePhone(context);
+                break;
+            case SET_BRITNESS:
+                try {
+                    setSystemBrightness(value, context);
+                } catch (Settings.SettingNotFoundException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
+
+
 
     public static void silencePhone(Context context){
         AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);

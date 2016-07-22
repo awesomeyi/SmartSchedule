@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.lib.triggers;
 
 import android.Manifest;
 import android.app.Service;
@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
+import com.example.yi.smartschedule.lib.Functionality;
+import com.example.yi.smartschedule.lib.Util;
 
 public class LocationService extends Service {
 

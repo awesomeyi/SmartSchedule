@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.lib.triggers;
 
 import android.content.Context;
 import android.media.AudioManager;

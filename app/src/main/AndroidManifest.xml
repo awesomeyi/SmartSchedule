@@ -21,12 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver android:name=".lib.ServiceReceiver" android:enabled="true" android:exported="false">
+        <receiver android:name=".lib.triggers.ServiceReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <service android:name=".lib.LocationService" android:process=":my_service" />
+        <service android:name=".lib.triggers.LocationService" android:process=":my_service" />
         <activity android:name=".activities.MainViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

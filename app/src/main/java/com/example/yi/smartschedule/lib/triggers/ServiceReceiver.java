@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.lib.triggers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.lib.Util;
 
 /**

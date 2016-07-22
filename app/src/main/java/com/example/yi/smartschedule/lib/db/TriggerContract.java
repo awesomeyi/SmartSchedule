@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib;
+package com.example.yi.smartschedule.lib.db;
 
 import android.provider.BaseColumns;
 
@@ -17,5 +17,6 @@ public class TriggerContract {
         public static final String COLUMN_NAME_TYPE = "type";
         public static final String COLUMN_NAME_ADTIONAL_INFO = "adtionalinfo";
         public static final String COLUMN_NAME_ACTIONS = "actions";
+        public static final String COLUMN_NAME_VALUE = "actionvalue";
     }
 }

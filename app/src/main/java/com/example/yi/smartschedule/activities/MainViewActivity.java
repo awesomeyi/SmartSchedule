@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.Functionality;
-import com.example.yi.smartschedule.lib.LocationService;
+import com.example.yi.smartschedule.lib.triggers.LocationService;
 
 public class MainViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,9 +31,9 @@ public class MainViewActivity extends AppCompatActivity implements View.OnClickL
         dunce.setOnClickListener(this);
 
         Functionality functionality = new Functionality(getApplicationContext());
-        functionality.addTrigger("phoneCall", "9143309136", "unSilencePhone");
+        //functionality.addTrigger("phoneCall", "9143309136", "unSilencePhone");
         startService(new Intent(this, LocationService.class));
-
+        //functionality.addTrigger(Functionality.TRIGGER_PHONECALL, "9143309136", Functionality.SET_BRITNESS, 100);
 
         //functionality.gpsTrigger(new Location("J"));
 
