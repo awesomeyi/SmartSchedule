@@ -1,8 +1,12 @@
 package com.example.yi.smartschedule.activities;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.activities.TimeView.EndlessScrollListener;
@@ -31,6 +35,9 @@ public class TimeViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_view);
+
+        Toolbar top_toggle_bar = (Toolbar) findViewById(R.id.actionBar);
+        setSupportActionBar(top_toggle_bar);
 
         AligningRecyclerView time_line_list = (AligningRecyclerView) findViewById(R.id.time_line_list);
         AligningRecyclerView main_event_list = (AligningRecyclerView) findViewById(R.id.main_event_list);

@@ -30,6 +30,7 @@
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:src="@drawable/half_hour_divider"
+            android:tint="@color/colorPrimaryDark"
             android:layout_alignParentTop="true"
             android:layout_weight="1" />
     </LinearLayout>

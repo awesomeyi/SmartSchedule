@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="30dp"
     android:layout_marginLeft="45dp"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/round_rect"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -17,11 +17,13 @@
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:src="@drawable/event_triangle"
+            android:tint="@color/colorPrimary"
             android:layout_alignParentTop="true"/>
         <ImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:src="@drawable/event_triangle"
+            android:tint="@color/colorPrimary"
             android:scaleY="-1"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
