@@ -1,5 +1,6 @@
 package com.example.yi.smartschedule.lib;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +24,8 @@ public class Functionality {
     public static final String UNSILENCE_PHONE = "unSilencePhone";
     public static final String VIBERATE_PHONE = "ringerViberatePhone";
     public static final String SET_BRITNESS = "setBrightness";
+    public static final String TURN_OFF_BLUETOOTH = "turnOffBluetooth";
+    public static final String TURN_ON_BLUETOOTH = "turnOnBluetooth";
 
     public static final String TRIGGER_GPS_ARIVE = "GPS";
     public static final String TRIGGER_GPS_LEAVE = "GPSleave";
@@ -175,6 +178,12 @@ public class Functionality {
             case VIBERATE_PHONE:
                 ringerViberatePhone(context);
                 break;
+            case TURN_OFF_BLUETOOTH:
+                turnOffBletooth();
+                break;
+            case TURN_ON_BLUETOOTH:
+                turnOnBletooth();
+                break;
             case SET_BRITNESS:
                 try {
                     setSystemBrightness(value, context);
@@ -217,5 +226,22 @@ public class Functionality {
         //gets current brightness:
         int currentBrightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS);
         return currentBrightness;
+    }
+
+    public void turnOffBletooth() {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter != null) {
+            if (mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.disable();
+            }
+        }
+    }
+    public void turnOnBletooth(){
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter != null) {
+            if (!mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.enable();
+            }
+        }
     }
 }

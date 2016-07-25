@@ -2,6 +2,7 @@ package com.example.yi.smartschedule.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneStateListener;
@@ -30,10 +32,22 @@ import android.widget.Toast;
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.lib.Util;
+import com.uber.sdk.android.core.UberSdk;
+import com.uber.sdk.android.core.auth.AccessTokenManager;
+import com.uber.sdk.android.core.auth.AuthenticationError;
+import com.uber.sdk.android.core.auth.LoginCallback;
+import com.uber.sdk.android.core.auth.LoginManager;
+import com.uber.sdk.core.auth.AccessToken;
+import com.uber.sdk.core.auth.Scope;
+import com.uber.sdk.rides.client.CredentialsSession;
+import com.uber.sdk.rides.client.SessionConfiguration;
+import com.uber.sdk.rides.client.UberRidesApi;
+import com.uber.sdk.rides.client.model.SandboxRideRequestParameters;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -64,6 +78,53 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
 
         Button message = (Button) findViewById(R.id.message);
         message.setOnClickListener(this);
+
+        Button blueTooth = (Button) findViewById(R.id.bluetooth);
+        blueTooth.setOnClickListener(this);
+        //todo figure out uber login
+        /*
+        //set up Uber api
+        SessionConfiguration config = new SessionConfiguration.Builder()
+                .setClientId("ystFUzxTxsCMbwi3RS7FSaYnVoyPiCOo") //This is necessary
+                .setEnvironment(SessionConfiguration.Environment.SANDBOX) //Useful for testing your app in the sandbox environment
+                .setScopes(Arrays.asList(Scope.PROFILE, Scope.RIDE_WIDGETS)) //Your scopes for authentication here
+                .build();
+
+        //This is a convenience method and will set the default config to be used in other components without passing it directly.
+        UberSdk.initialize(config);
+        SandboxRideRequestParameters rideRequestParameters = new SandboxRideRequestParameters.Builder().setStatus("bad").build();
+
+        SessionConfiguration newConfig = config.newBuilder().setEnvironment(SessionConfiguration.Environment.SANDBOX).build();
+
+        LoginCallback loginCallback = new LoginCallback() {
+            @Override
+            public void onLoginCancel() {
+                // User canceled login
+            }
+
+            @Override
+            public void onLoginError(@NonNull AuthenticationError error) {
+                // Error occurred during login
+            }
+
+            @Override
+            public void onLoginSuccess(@NonNull AccessToken accessToken) {
+                // Successful login!  The AccessToken will have already been saved.
+            }
+
+            @Override
+            public void onAuthorizationCodeReceived(@NonNull String authorizationCode) {
+
+            }
+        };
+        AccessTokenManager accessTokenManager = new AccessTokenManager(getApplicationContext());
+        LoginManager loginManager = new LoginManager(accessTokenManager, loginCallback);
+        loginManager.login(this);
+        */
+
+
+        //CredentialsSession session = new CredentialsSession(newConfig, );
+        //RidesService service = (RidesService) UberRidesApi.with(session);
 
 
 
@@ -148,6 +209,9 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
             case R.id.message:
                 sendText("9143309136", "Suck My Dick");
                 break;
+            case R.id.bluetooth:
+                toggleBluetooth();
+                break;
 
         }
     }
@@ -198,6 +262,17 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         catch (Exception e) {
             Util.d("Failed to send Text");
             e.printStackTrace();
+        }
+    }
+
+    public void toggleBluetooth(){
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter != null) {
+            if (mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.disable();
+            } else {
+                mBluetoothAdapter.enable();
+            }
         }
     }
 
