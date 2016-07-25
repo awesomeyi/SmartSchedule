@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.activities.MainViewActivity;
 import com.example.yi.smartschedule.lib.BasicTime;
 import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.EventStore;
@@ -49,7 +49,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             //Random r = new Random();
             //my_view.setBackgroundColor(Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
 
-            int finalheight = Util.pixel_to_dp(ctx, TimeViewActivity.FULL_HOUR_HEIGHT());
+            int finalheight = Util.pixel_to_dp(ctx, MainViewActivity.FULL_HOUR_HEIGHT());
             my_view.getLayoutParams().height = finalheight;
             //Util.d("" + (hour_text.getLineHeight()));
 

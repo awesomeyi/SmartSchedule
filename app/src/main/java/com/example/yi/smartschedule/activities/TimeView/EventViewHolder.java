@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.activities.TimeView.EventAdapter;
-import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.activities.MainViewActivity;
 import com.example.yi.smartschedule.lib.BasicTime;
 import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.EventData;
@@ -108,7 +107,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     }
 
     private int blockHeight() {
-        return TimeViewActivity.FULL_HOUR_HEIGHT();
+        return MainViewActivity.FULL_HOUR_HEIGHT();
     }
     private double minGap() {
         return 2 * EventAdapter.getMinGap();

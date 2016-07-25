@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
-import com.example.yi.smartschedule.activities.TimeViewActivity;
+import com.example.yi.smartschedule.activities.MainViewActivity;
 import com.example.yi.smartschedule.lib.BasicTime;
-import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.EventData;
 import com.example.yi.smartschedule.models.EventStore;
 import com.example.yi.smartschedule.models.TimeView.EventBlock;
@@ -102,7 +101,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     //Rounding errors can occur, this is why we fudge the padding to an exact multiple of HALF_HOUR_BLOCK()
     private void fudgePadding(EventBlock paddingBlock) {
         int fdp = dpcount + (int) paddingBlock.getHeight();
-        int halfBlock = TimeViewActivity.HALF_HOUR_HEIGHT();
+        int halfBlock = MainViewActivity.HALF_HOUR_HEIGHT();
         double scale = (double) fdp / halfBlock;
         scale = Math.round(scale);
         int adjusted = (int) (scale * halfBlock);

@@ -27,7 +27,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".lib.triggers.LocationService" android:process=":my_service" />
-        <activity android:name=".activities.MainViewActivity">
+        <activity android:name=".activities.StartViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,20 +36,20 @@
         </activity>
         <activity
             android:name=".activities.FunctionalityViewActivity"
-            android:parentActivityName=".activities.MainViewActivity"
+            android:parentActivityName=".activities.StartViewActivity"
             >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainViewActivity" />
+                android:value=".activities.StartViewActivity" />
         </activity>
         <activity
-            android:name=".activities.TimeViewActivity"
-            android:parentActivityName=".activities.MainViewActivity"
+            android:name=".activities.MainViewActivity"
+            android:parentActivityName=".activities.StartViewActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainViewActivity" />
+                android:value=".activities.StartViewActivity" />
         </activity>
 
     </application>

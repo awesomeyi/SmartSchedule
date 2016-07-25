@@ -1,52 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
-    android:background="@color/backgroundLight">
+    android:layout_height="wrap_content"
+    android:background="#e0e0e0">
 
-    <ImageView
-        android:id="@+id/toggle_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/arrow_down_icon"
-        android:tint="@color/colorPrimary"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/top_toggle_bar"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/toggle_indicator">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/left_toggle_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/location_bar_icon"
-            android:tint="@color/colorPrimaryDark" />
+            <ImageView
+                android:id="@+id/toggle_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/arrow_down_icon"
+                android:tint="@color/colorPrimary"/>
 
-        <ImageView
-            android:id="@+id/current_toggle_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/time_bar_icon"
-            android:tint="@color/colorPrimaryDark"
-            android:layout_centerInParent="true" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/toggle_indicator"
+                android:layout_marginBottom="3dp">
 
-        <ImageView
-            android:id="@+id/right_toggle_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/human_bar_icon"
-            android:tint="@color/colorPrimaryDark" />
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/left_toggle_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/location_bar_icon"
+                    android:tint="@color/colorPrimaryDark" />
 
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/current_toggle_icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/time_bar_icon"
+                    android:tint="@color/colorPrimaryDark"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:id="@+id/right_toggle_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/human_bar_icon"
+                    android:tint="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.AppBarLayout>

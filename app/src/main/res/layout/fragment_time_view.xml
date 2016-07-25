@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="10dp"
+    tools:context="com.example.yi.smartschedule.activities.TimeView.TimeViewFragment">
+
+    <aligningrecyclerview.AligningRecyclerView
+        android:id="@+id/time_line_list"
+        android:layout_width="45dp"
+        android:layout_height="match_parent" />
+    <aligningrecyclerview.AligningRecyclerView
+        android:id="@+id/main_event_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

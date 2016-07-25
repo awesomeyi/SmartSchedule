@@ -11,7 +11,7 @@
             android:id="@+id/hour_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="@color/colorPrimaryDark"
             android:text="8"
             android:textStyle="bold"
