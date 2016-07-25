@@ -26,6 +26,8 @@ public class Functionality {
     public static final String SET_BRITNESS = "setBrightness";
     public static final String TURN_OFF_BLUETOOTH = "turnOffBluetooth";
     public static final String TURN_ON_BLUETOOTH = "turnOnBluetooth";
+    public static final String SET_MEDIA_VOLUME = "setMediaVolume";
+    public static final String SET_RINGER_VOLUME = "setRingerVolume";
 
     public static final String TRIGGER_GPS_ARIVE = "GPS";
     public static final String TRIGGER_GPS_LEAVE = "GPSleave";
@@ -184,6 +186,12 @@ public class Functionality {
             case TURN_ON_BLUETOOTH:
                 turnOnBletooth();
                 break;
+            case SET_RINGER_VOLUME:
+                setRingerVolume(value, context);
+                break;
+            case SET_MEDIA_VOLUME:
+                setMediaVolume(value, context);
+                break;
             case SET_BRITNESS:
                 try {
                     setSystemBrightness(value, context);
@@ -195,7 +203,19 @@ public class Functionality {
     }
 
 
+    public static void setMediaVolume(int volume, Context context){
+        AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_SHOW_UI);
+        Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        Util.d("Phone sound set to: " +  volume);
+    }
 
+    public static void setRingerVolume(int volume, Context context){
+        AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audio.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI);
+        Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_RING));
+        Util.d("Phone ringer set to: " + volume);
+    }
     public static void silencePhone(Context context){
         AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);

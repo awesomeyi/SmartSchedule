@@ -79,6 +79,8 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
         Button message = (Button) findViewById(R.id.message);
         message.setOnClickListener(this);
 
+        setRingerVolume(10);
+
         Button blueTooth = (Button) findViewById(R.id.bluetooth);
         blueTooth.setOnClickListener(this);
         //todo figure out uber login
@@ -226,6 +228,18 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
     public void ringerViberatePhone(){
         audio.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
         Util.d("Phone sound Vibrate");
+    }
+
+    public void setMediaVolume(int volume){
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_SHOW_UI);
+        Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        Util.d("Phone sound set to: " +  volume);
+    }
+
+    public void setRingerVolume(int volume){
+        audio.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI);
+        Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_RING));
+        Util.d("Phone ringer set to: " + volume);
     }
     public void setSystemBrightness(int brightness) throws Settings.SettingNotFoundException {
         //gets current brightness:
