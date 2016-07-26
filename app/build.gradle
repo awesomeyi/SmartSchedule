@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.github.Stoyicker:AligningRecyclerView:v1.0'
     compile 'com.uber.sdk:rides-android:0.5.2'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

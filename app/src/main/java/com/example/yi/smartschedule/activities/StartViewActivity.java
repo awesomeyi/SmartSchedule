@@ -35,6 +35,7 @@ public class StartViewActivity extends AppCompatActivity implements View.OnClick
         startService(new Intent(this, LocationService.class));
         //functionality.addTrigger(Functionality.TRIGGER_PHONECALL, "9143309136", Functionality.SET_BRITNESS, 100);
 
+
         //functionality.gpsTrigger(new Location("J"));
 
     }
