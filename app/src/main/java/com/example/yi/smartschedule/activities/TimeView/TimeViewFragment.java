@@ -1,7 +1,6 @@
 package com.example.yi.smartschedule.activities.TimeView;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +20,7 @@ import aligningrecyclerview.AlignmentManager;
 
 public class TimeViewFragment extends Fragment {
 
-    //private OnFragmentInteractionListener mListener;
+    private TimeViewListener myListener;
 
     public TimeViewFragment() {
         // Required empty public constructor
@@ -60,7 +59,13 @@ public class TimeViewFragment extends Fragment {
 
         EventStore eventStore = new EventStore(events);
         final TimeLineAdapter timeLineAdapter = new TimeLineAdapter(eventStore);
-        final EventAdapter eventAdapter = new EventAdapter(eventStore);
+        final TimeViewFragment _this = this;
+        final EventAdapter eventAdapter = new EventAdapter(eventStore, new EventAdapter.EventHolderClick() {
+            @Override
+            public void onEventClick(EventData event) {
+                _this.onEventClick(event);
+            }
+        });
 
         final @AligningRecyclerView.AlignOrientation int orientation;
         orientation = AligningRecyclerView.ALIGN_ORIENTATION_VERTICAL;
@@ -92,33 +97,29 @@ public class TimeViewFragment extends Fragment {
         return my_view;
     }
 
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void onEventClick(EventData event) {
+        if (myListener != null) {
+            myListener.onEventClick(event);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof TimeViewListener) {
+            myListener = (TimeViewListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException("Didn't implement listener you dumbass!");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        myListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    } */
+    public interface TimeViewListener {
+        void onEventClick(EventData event);
+    }
 }

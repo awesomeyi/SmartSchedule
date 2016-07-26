@@ -25,12 +25,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     private ArrayList<EventStore> allEvents = new ArrayList<>();
     private int dpcount = 0;
 
+
+
+    public static interface EventHolderClick {
+        public void onEventClick(EventData event);
+    }
+    private EventHolderClick myListener;
+
     //Minimum gap between elements
     public static double getMinGap() {
         return 1.5; //dp
     }
 
-    public EventAdapter(EventStore allEvents) {
+    public EventAdapter(EventStore allEvents, EventHolderClick myListener) {
+        this.myListener = myListener;
         //Insert start padding
         allBlocks.add(EventBlock.create().setHeight(15));
         this.addDay(allEvents, allEvents.at(0).getStartTime());
@@ -118,7 +126,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
         this.context = parent.getContext();
         View v = LayoutInflater .from(parent.getContext())
                         .inflate(R.layout.single_event_element, parent, false);
-        EventViewHolder evh = new EventViewHolder(v);
+        EventViewHolder evh = new EventViewHolder(v, new EventViewHolder.EventViewClick() {
+            @Override
+            public void onClick(View v, int pos) {
+                myListener.onEventClick(allBlocks.get(pos).getEvent());
+            }
+        });
         return evh;
     }
 

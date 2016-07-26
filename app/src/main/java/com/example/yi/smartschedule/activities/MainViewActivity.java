@@ -7,8 +7,11 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.activities.TimeView.TimeViewFragment;
+import com.example.yi.smartschedule.lib.Util;
+import com.example.yi.smartschedule.models.EventData;
 
-public class MainViewActivity extends AppCompatActivity {
+public class MainViewActivity extends AppCompatActivity
+        implements TimeViewFragment.TimeViewListener {
 
     public static int HALF_HOUR_HEIGHT() {
         return 30;
@@ -29,5 +32,10 @@ public class MainViewActivity extends AppCompatActivity {
         getSupportFragmentManager() .beginTransaction()
                                     .add(R.id.frame_container, timeViewFragment)
                                     .commit();
+    }
+
+    @Override
+    public void onEventClick(EventData event) {
+        Util.d("" + event.getTitle());
     }
 }

@@ -3,6 +3,7 @@ package com.example.yi.smartschedule.activities.TimeView;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodSession;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ import com.example.yi.smartschedule.models.TimeView.EventBlock;
 /**
  * Created by Yi on 7/13/16.
  */
-public class EventViewHolder extends RecyclerView.ViewHolder {
+public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     //Top level view
     private View my_view;
@@ -28,9 +29,15 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     private ImageView event_icon;
     private View event_icon_wrapper;
 
-    public EventViewHolder(View v) {
+    public EventViewClick myListener;
+
+    public EventViewHolder(View v, EventViewClick myListener) {
         super(v);
         this.my_view = v;
+        this.myListener = myListener;
+
+        //Init clicks
+        v.setOnClickListener(this);
 
         //Init elements
         title_text = ((TextView) v.findViewById(R.id.title_text));
@@ -111,5 +118,14 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     }
     private double minGap() {
         return 2 * EventAdapter.getMinGap();
+    }
+
+    public static interface EventViewClick {
+        public void onClick(View v, int pos);
+    }
+
+    @Override
+    public void onClick(View v) {
+        myListener.onClick(v, this.getLayoutPosition());
     }
 }
