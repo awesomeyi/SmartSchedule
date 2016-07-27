@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@color/backgroundLight"
+    tools:context=".activities.DetailView.DetailViewFragment">
+
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/hm_button"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="9dp"
+                android:layout_alignParentTop="true"
+                android:id="@+id/top_arrow"
+                android:src="@drawable/arrow_down_icon"
+                android:scaleY="-1"
+                android:layout_gravity="center_horizontal"
+                android:tint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/time_picker_list"
+                android:layout_width="wrap_content"
+                android:layout_height="182dp"
+                android:layout_gravity="center_horizontal">
+            </android.support.v7.widget.RecyclerView>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="9dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/arrow_down_icon"
+                android:layout_centerHorizontal="true"
+                android:tint="@color/colorPrimary"/>
+        </LinearLayout>
+
+
+        <include
+            layout="@layout/hm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="23dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/colorPrimary">
+        <RelativeLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent">
+            <View
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundLight"/>
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/event_triangle"
+                android:tint="@color/colorPrimary"
+                android:layout_alignParentTop="true"/>
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/event_triangle"
+                android:tint="@color/colorPrimary"
+                android:scaleY="-1"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+        <FrameLayout
+            android:layout_width="90dp"
+            android:layout_height="match_parent"></FrameLayout>
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:layout_marginRight="15dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/DetailEventEditText"
+                    android:textColor="@color/backgroundLight"
+                    android:text="Work on Report"
+                    android:hint="Title"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/DetailEventEditText"
+                    android:textColor="@color/backgroundLight"
+                    android:text="10:30-12"
+                    android:hint="Time"
+                    android:layout_marginTop="5dp"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/DetailEventEditText"
+                    android:textColor="@color/backgroundLight"
+                    android:text="8/21/2016"
+                    android:hint="Date"
+                    android:layout_marginTop="5dp"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/DetailEventEditText"
+                    android:textColor="@color/backgroundLight"
+                    android:hint="Location"
+                    android:layout_marginTop="5dp"/>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/DetailEventEditText"
+                    android:textColor="@color/backgroundLight"
+                    android:text="Check out the group outline on the Google doc and do a rough draft of parts I II and III"
+                    android:textSize="18sp"
+                    android:hint="Description"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

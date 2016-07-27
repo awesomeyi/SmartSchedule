@@ -1,13 +1,12 @@
 package com.example.yi.smartschedule.activities;
 
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.example.yi.smartschedule.R;
+import com.example.yi.smartschedule.activities.DetailView.DetailViewFragment;
 import com.example.yi.smartschedule.activities.TimeView.TimeViewFragment;
-import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.EventData;
 
 public class MainViewActivity extends AppCompatActivity
@@ -36,6 +35,10 @@ public class MainViewActivity extends AppCompatActivity
 
     @Override
     public void onEventClick(EventData event) {
-        Util.d("" + event.getTitle());
+        DetailViewFragment detailEventFragment = new DetailViewFragment();
+        getSupportFragmentManager() .beginTransaction()
+                                    .add(R.id.frame_container, detailEventFragment)
+                                    .commit();
+
     }
 }

@@ -197,7 +197,7 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
     }
 
     private void loadProfileInfo() {
-        loginManager.getAccessTokenManager().setAccessToken(new AccessToken("profile history", ));
+       // loginManager.getAccessTokenManager().setAccessToken(new AccessToken("profile history", ));
         Session session = loginManager.getSession();
         RidesService service = UberRidesApi.with(session).build().createService();
 

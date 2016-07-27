@@ -11,4 +11,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DetailEventEditText">
+        <item name="android:backgroundTint">#80EEEEEE</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColorHint">#80EEEEEE</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+    </style>
+
 </resources>
