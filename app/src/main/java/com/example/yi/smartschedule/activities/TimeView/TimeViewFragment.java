@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.EndlessScrollListener;
 import com.example.yi.smartschedule.lib.PresetIcon;
 import com.example.yi.smartschedule.models.DateManager;
 import com.example.yi.smartschedule.models.EventData;

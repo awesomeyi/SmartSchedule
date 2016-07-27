@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/top_toggle_bar"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="80dp"
         app:contentInsetEnd="0dp"
         app:contentInsetStart="0dp" >
 
@@ -19,7 +19,7 @@
             <ImageView
                 android:id="@+id/toggle_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="8dp"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="8dp"
@@ -35,8 +35,8 @@
 
                 <ImageView
                     android:id="@+id/left_toggle_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginRight="20dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/location_bar_icon"
@@ -44,8 +44,8 @@
 
                 <ImageView
                     android:id="@+id/current_toggle_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/time_bar_icon"
                     android:tint="@color/colorPrimaryDark"
@@ -53,8 +53,8 @@
 
                 <ImageView
                     android:id="@+id/right_toggle_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginLeft="20dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/human_bar_icon"

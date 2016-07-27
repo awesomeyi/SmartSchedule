@@ -31,7 +31,7 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
         public void setData(BasicTime time) {
             TextView hour_text = (TextView) myView.findViewById(R.id.hour_text),
                     minutes_text = (TextView) myView.findViewById(R.id.minute_text);
-            hour_text.setText("" + ( (int) time.getHours()));
+            hour_text.setText("" + ( BasicTime.milToStandardHours((int) time.getHours())));
             if(time.getMinutes() % 15 == 0) {
                 hour_text.setVisibility(View.VISIBLE);
             } else {
@@ -42,9 +42,14 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
     }
 
     public TimePickerAdapter(BasicTime startTime) {
-        int timenum = 7;
-        for(int i = 0; i < timenum; ++i) {
-            allTimes.add((new BasicTime(0, 5 * i).addTime(startTime)));
+        allTimes.add(startTime);
+        this.addTimes(6);
+    }
+
+    public void addTimes(int tnum) {
+        BasicTime start = allTimes.get(allTimes.size() - 1);
+        for(int i = 1; i <= tnum; ++i) {
+            allTimes.add((new BasicTime(0, 5 * i).addTime(start)));
         }
     }
 

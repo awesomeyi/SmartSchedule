@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.EndlessScrollListener;
+import com.example.yi.smartschedule.models.DateManager;
 
 public class DetailViewFragment extends Fragment {
 
@@ -31,9 +33,22 @@ public class DetailViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_view, container, false);
         RecyclerView time_picker_list = (RecyclerView) v.findViewById(R.id.time_picker_list);
-        time_picker_list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        TimePickerAdapter timePickerAdapter = new TimePickerAdapter(new BasicTime(10, 30));
+
+        final LinearLayoutManager timePickerLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final TimePickerAdapter timePickerAdapter = new TimePickerAdapter(new BasicTime(10, 30));
+
         time_picker_list.setAdapter(timePickerAdapter);
+        time_picker_list.setLayoutManager(timePickerLayout);
+
+        time_picker_list.addOnScrollListener(new EndlessScrollListener(timePickerLayout) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                //Insert times
+                int cursize = timePickerAdapter.getItemCount();
+                timePickerAdapter.addTimes(6);
+                timePickerAdapter.notifyItemRangeInserted(cursize, timePickerAdapter.getItemCount());
+            }
+        });
         return v;
     }
 }

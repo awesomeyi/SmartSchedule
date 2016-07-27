@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.activities.TimeView;
+package com.example.yi.smartschedule.lib;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
