@@ -18,7 +18,8 @@ public class TriggerDbHelper extends SQLiteOpenHelper {
                     TriggerEntry._ID + " INTEGER PRIMARY KEY," +
                     TriggerEntry.COLUMN_NAME_TYPE + TEXT_TYPE + COMMA_SEP +
                     TriggerEntry.COLUMN_NAME_ADTIONAL_INFO + TEXT_TYPE + COMMA_SEP +
-                    TriggerEntry.COLUMN_NAME_ACTIONS + TEXT_TYPE +
+                    TriggerEntry.COLUMN_NAME_ACTIONS + TEXT_TYPE + COMMA_SEP +
+                    TriggerEntry.COLUMN_NAME_FILTERS + TEXT_TYPE +
             " )";
 
     private static final String SQL_DELETE_ENTRIES =

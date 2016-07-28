@@ -28,6 +28,8 @@ public class Functionality {
     public static final String TURN_ON_BLUETOOTH = "turnOnBluetooth";
     public static final String SET_MEDIA_VOLUME = "setMediaVolume";
     public static final String SET_RINGER_VOLUME = "setRingerVolume";
+    public static final String SET_NOTIFICATION_VOLUME = "setNotificationVolume";
+
 
     public static final String TRIGGER_GPS_ARIVE = "GPS";
     public static final String TRIGGER_GPS_LEAVE = "GPSleave";
@@ -36,6 +38,7 @@ public class Functionality {
     public Functionality(Context context){
         TriggerDbHelper mDbHelper = new TriggerDbHelper(context);
         this.db = mDbHelper.getReadableDatabase();
+        mDbHelper.onUpgrade(db, 2, 3);
         this.context = context;
     }
     public void addTrigger(String type, String addtionalInfo, String actions){
@@ -60,6 +63,9 @@ public class Functionality {
                 TriggerContract.TriggerEntry.TABLE_NAME,
                 "null",
                 values);
+    }
+    public String getActionString(String action, String value) {
+        return action + " " + value;
     }
 
     public void phoneTrigger(String phoneNumber){
@@ -111,7 +117,7 @@ public class Functionality {
 
         }
     }
-    public Location getLocation(Cursor c){
+    private Location getLocation(Cursor c){
         String type = c.getString(
                 c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_TYPE)
         );
@@ -126,7 +132,7 @@ public class Functionality {
         return endPoint;
     }
 
-    public Cursor querry(String type) {
+    private Cursor querry(String type) {
 
         String[] projection = {
                 TriggerContract.TriggerEntry._ID,
@@ -156,7 +162,7 @@ public class Functionality {
         return c;
     }
 
-    public void doActions(String actions) {
+    private void doActions(String actions) {
         String action[] = actions.split(",");
         for(int i =0; i < action.length; i++){
             if((action[i].startsWith("set"))) {
@@ -169,7 +175,7 @@ public class Functionality {
         }
     }
 
-    public void doAction(String action, int value){
+    private void doAction(String action, int value){
         switch (action){
             case SILENCE_PHONE:
                 silencePhone(context);
@@ -189,6 +195,9 @@ public class Functionality {
             case SET_RINGER_VOLUME:
                 setRingerVolume(value, context);
                 break;
+            case SET_NOTIFICATION_VOLUME:
+                setNotificationVolume(value, context);
+                break;
             case SET_MEDIA_VOLUME:
                 setMediaVolume(value, context);
                 break;
@@ -207,6 +216,12 @@ public class Functionality {
         AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_SHOW_UI);
         Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        Util.d("Phone sound set to: " +  volume);
+    }
+    public static void setNotificationVolume(int volume, Context context){
+        AudioManager audio =  (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, volume, AudioManager.FLAG_SHOW_UI);
+        Util.d("" + audio.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION));
         Util.d("Phone sound set to: " +  volume);
     }
 

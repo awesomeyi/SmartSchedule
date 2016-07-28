@@ -18,5 +18,7 @@ public class TriggerContract {
         public static final String COLUMN_NAME_ADTIONAL_INFO = "adtionalinfo";
         public static final String COLUMN_NAME_ACTIONS = "actions";
         public static final String COLUMN_NAME_VALUE = "actionvalue";
+        public static final String COLUMN_NAME_FILTERS = "filters";
+
     }
 }
