@@ -2,6 +2,8 @@ package com.example.yi.smartschedule.lib;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup;
 

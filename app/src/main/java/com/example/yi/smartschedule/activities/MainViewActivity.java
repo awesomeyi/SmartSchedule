@@ -26,11 +26,15 @@ public class MainViewActivity extends AppCompatActivity
 
         Toolbar top_toggle_bar = (Toolbar) findViewById(R.id.top_toggle_bar);
         setSupportActionBar(top_toggle_bar);
+        if (savedInstanceState == null) {
 
-        TimeViewFragment timeViewFragment = new TimeViewFragment();
-        getSupportFragmentManager() .beginTransaction()
-                                    .add(R.id.frame_container, timeViewFragment)
-                                    .commit();
+            TimeViewFragment timeViewFragment = new TimeViewFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_container, timeViewFragment)
+
+                    .commit();
+
+        }
     }
 
     @Override
