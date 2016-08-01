@@ -2,6 +2,7 @@ package com.example.yi.smartschedule.activities.DetailView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,10 +34,13 @@ public class DetailViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_view, container, false);
 
-        TimePickerFragment top_time_picker = TimePickerFragment.newInstance(new BasicTime(10, 30), new BasicTime(12, 00), true);
         if (savedInstanceState == null) {
+            TimePickerFragment top_time_picker = TimePickerFragment.newInstance(new BasicTime(10, 30), new BasicTime(12, 00), true);
+            TimePickerFragment bottom_time_picker = TimePickerFragment.newInstance(new BasicTime(12, 00), new BasicTime(10, 30), false);
+
             getFragmentManager().beginTransaction()
                     .add(R.id.top_picker_container, top_time_picker)
+                    .add(R.id.bottom_picker_container, bottom_time_picker)
                     .commit();
         }
         return v;

@@ -3,16 +3,15 @@ package com.example.yi.smartschedule.activities.DetailView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.yi.smartschedule.R;
@@ -28,15 +27,16 @@ public class TimePickerFragment extends Fragment {
 
     private static String P_START = "startTime";
     private static String P_LIMIT = "limit";
-    private static String P_REVERSE = "reverse";
+    private static String P_TOP = "top";
 
     private BasicTime startTime, limit;
-    private boolean reverse = false;
+    private boolean top = true;
 
     private View myView;
     private RecyclerView time_picker_list;
     private View picker_button, picker_layout;
     private TextView hour_text, minute_text;
+    private View time_indicator_up, time_indicator_down, top_block;
 
     private TimePickerAdapter timePickerAdapter;
     private LinearLayoutManager timePickerLayout;
@@ -48,7 +48,7 @@ public class TimePickerFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable(P_START, startTime);
         args.putSerializable(P_LIMIT, limit);
-        args.putBoolean(P_REVERSE, reverse);
+        args.putBoolean(P_TOP, reverse);
 
         myFragment.setArguments(args);
         return myFragment;
@@ -63,7 +63,7 @@ public class TimePickerFragment extends Fragment {
             Bundle b = getArguments();
             startTime = (BasicTime) b.getSerializable(P_START);
             limit = (BasicTime) b.getSerializable(P_LIMIT);
-            reverse = b.getBoolean(P_REVERSE);
+            top = b.getBoolean(P_TOP);
         }
     }
 
@@ -71,7 +71,7 @@ public class TimePickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v =inflater.inflate(R.layout.fragment_time_picker, container, false);
+        View v = inflater.inflate(R.layout.fragment_time_picker, container, false);
 
         //Init elements
         picker_layout = v.findViewById(R.id.picker_layout);
@@ -81,21 +81,43 @@ public class TimePickerFragment extends Fragment {
         hour_text = (TextView) v.findViewById(R.id.hour_text);
         minute_text = (TextView) v.findViewById(R.id.minute_text);
 
+        time_indicator_up = v.findViewById(R.id.time_indicator_up);
+        time_indicator_down = v.findViewById(R.id.time_indicator_down);
+        top_block = v.findViewById(R.id.top_block);
+
+
         this.setTimeText();
 
         picker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(top) {
+                    time_indicator_up.startAnimation(createSlide(0, 0, -10, 70 + getOffset()));
+                    time_indicator_down.startAnimation(createSlide(0, 0, 0, 80 + getOffset()));
+                } else {
+                    time_indicator_up.startAnimation(createSlide(0, 0, 0, -(80 + getOffset()) ));
+                    time_indicator_down.startAnimation(createSlide(0, 0, 10, -(70 + getOffset()) ));
+                }
+
                 picker_layout.setVisibility(View.VISIBLE);
                 picker_button.setVisibility(View.INVISIBLE);
                 scrollToTime();
             }
         });
 
-        timePickerLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, reverse);
-        timePickerAdapter = new TimePickerAdapter(limit, reverse, new TimePickerAdapter.TimeSelectListener() {
+        timePickerLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, top);
+        timePickerAdapter = new TimePickerAdapter(limit, top, new TimePickerAdapter.TimeSelectListener() {
             @Override
             public void onTimeClick(BasicTime time) {
+                if(top) {
+                    time_indicator_up.startAnimation(createSlide(0, 0, 70 + getOffset(), -10));
+                    time_indicator_down.startAnimation(createSlide(0, 0, 80 + getOffset(), 0));
+                } else {
+                    time_indicator_up.startAnimation(createSlide(0, 0, -(80 + getOffset()), 0));
+                    time_indicator_down.startAnimation(createSlide(0, 0, -(70 + getOffset()), 10));
+                }
+
                 startTime = time;
                 setTimeText();
                 picker_layout.setVisibility(View.INVISIBLE);
@@ -117,8 +139,34 @@ public class TimePickerFragment extends Fragment {
             }
         });
 
+        if(!top) {
+            adjustBottom();
+        }
+
         myView = v;
         return v;
+    }
+
+    private void adjustBottom() {
+        addAlignParentBottom(picker_button);
+        addAlignParentBottom(top_block);
+        addAlignParentBottom(time_indicator_up);
+        addAlignParentBottom(time_indicator_down);
+        time_indicator_up.setVisibility(View.VISIBLE);
+        time_indicator_down.setVisibility(View.INVISIBLE);
+    }
+
+    private void addAlignParentBottom(View v) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) v.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        v.setLayoutParams(params);
+    }
+
+    private int getOffset() {
+        int curidx = timePickerAdapter.getTimeIndex(startTime);
+        if(curidx <= 3)
+            return 26 * (3 - curidx);
+        return 0;
     }
 
     private void setTimeText() {
@@ -132,39 +180,13 @@ public class TimePickerFragment extends Fragment {
         timePickerAdapter.addTimes(entries - timePickerAdapter.getItemCount() + 1);
         timePickerLayout.scrollToPositionWithOffset(curidx, Util.pixel_to_dp(getContext(), 91 - 13));
     }
-    /*
-    private void animateTransition() {
-        int scale = 1;
-        Animation slide_down = new TranslateAnimation(0, 0, 0, Util.pixel_to_dp(getContext(), 160));
-        slide_down.setDuration(100 * scale);
-        slide_down.setInterpolator(new LinearInterpolator());
-        //slide_down.setFillAfter(true);
-        slide_arrow.startAnimation(slide_down);
 
-        time_container.setVisibility(View.INVISIBLE);
-        picker_layout.setVisibility(View.VISIBLE);
-//        slide_down = new TranslateAnimation(0, 0, 0, Util.pixel_to_dp(getContext(), 80));
-//        slide_down.setDuration(100 * scale);
-//        slide_down.setInterpolator(new LinearInterpolator());
-        //slide_down.setFillAfter(true);
-        slide_down.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+    private Animation createSlide(int ox, int nx, int oy, int ny) {
+        Animation slide = new TranslateAnimation(Util.pixel_to_dp(getContext(), ox), Util.pixel_to_dp(getContext(), nx), Util.pixel_to_dp(getContext(), oy) , Util.pixel_to_dp(getContext(), ny));
+        slide.setDuration(200);
+        slide.setInterpolator(new FastOutSlowInInterpolator());
+        slide.setFillAfter(true);
+        return slide;
+    }
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                slide_arrow.setVisibility(View.INVISIBLE);
-                time_container.setVisibility(View.INVISIBLE);
-                picker_layout.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        //time_container.startAnimation(slide_down);
-    } */
 }
