@@ -32,7 +32,7 @@ public class StartViewActivity extends AppCompatActivity implements View.OnClick
         dunce.setOnClickListener(this);
 
         Functionality functionality = new Functionality(getApplicationContext());
-        //functionality.addTrigger("phoneCall", "9143309136", Functionality.UNSILENCE_PHONE + "," + Functionality.SET_RINGER_VOLUME + " 13");
+        functionality.addTrigger(Functionality.TRIGGER_PHONECALL, "9143309136", Functionality.UNSILENCE_PHONE + "," + Functionality.SET_RINGER_VOLUME + " 13", Functionality.FILTER_TIME + " 10:15");
         startService(new Intent(this, LocationService.class));
         //functionality.addTrigger(Functionality.TRIGGER_PHONECALL, "9143309136", Functionality.SET_BRITNESS, 100);
 

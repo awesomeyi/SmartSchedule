@@ -2,6 +2,8 @@ package com.example.yi.smartschedule.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -46,6 +48,7 @@ import com.uber.sdk.rides.client.services.RidesService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +74,14 @@ public class FunctionalityViewActivity extends AppCompatActivity implements View
 
         Button silence = (Button) findViewById(R.id.silent);
         silence.setOnClickListener(this);
+
+        /*
+        ActivityManager am = (ActivityManager) getApplicationContext()
+                .getSystemService(Activity.ACTIVITY_SERVICE);
+        String packageName = am.getRunningTasks(1).get(0).topActivity
+                .getPackageName();
+        Util.d(packageName);
+        */
 
         Button wifi = (Button) findViewById(R.id.wifi);
         wifi.setOnClickListener(this);

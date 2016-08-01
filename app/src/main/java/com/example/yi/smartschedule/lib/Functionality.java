@@ -13,6 +13,8 @@ import android.provider.Settings;
 import com.example.yi.smartschedule.lib.db.TriggerContract;
 import com.example.yi.smartschedule.lib.db.TriggerDbHelper;
 
+import java.security.PublicKey;
+
 /**
  * Created by jackphillips on 7/15/16.
  */
@@ -20,6 +22,7 @@ public class Functionality {
     private SQLiteDatabase db;
     private Context context;
 
+    public static final String FILTER_SEPERATOR = "--!!";
     public static final String SILENCE_PHONE = "silencePhone";
     public static final String UNSILENCE_PHONE = "unSilencePhone";
     public static final String VIBERATE_PHONE = "ringerViberatePhone";
@@ -34,18 +37,22 @@ public class Functionality {
     public static final String TRIGGER_GPS_ARIVE = "GPS";
     public static final String TRIGGER_GPS_LEAVE = "GPSleave";
     public static final String TRIGGER_PHONECALL = "phoneCall";
+    public static final String FILTER_TIME = "timeFILTER";
+
+    private static final int DISTANCE = 500;
 
     public Functionality(Context context){
         TriggerDbHelper mDbHelper = new TriggerDbHelper(context);
         this.db = mDbHelper.getReadableDatabase();
-        mDbHelper.onUpgrade(db, 2, 3);
+        //mDbHelper.onUpgrade(db, 2, 3);
         this.context = context;
     }
-    public void addTrigger(String type, String addtionalInfo, String actions){
+    public void addTrigger(String type, String addtionalInfo, String actions, String filters){
         ContentValues values = new ContentValues();
         values.put(TriggerContract.TriggerEntry.COLUMN_NAME_TYPE, type);
         values.put(TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO, addtionalInfo);
         values.put(TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS, actions);
+        values.put(TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS, filters);
 
         long newRowId = db.insert(
                 TriggerContract.TriggerEntry.TABLE_NAME,
@@ -69,6 +76,7 @@ public class Functionality {
     }
 
     public void phoneTrigger(String phoneNumber){
+        Util.d("Phone Call");
         Cursor c = querry(TRIGGER_PHONECALL);
         c.moveToFirst();
         for(int i = 0; i < c.getCount(); i++){
@@ -81,8 +89,11 @@ public class Functionality {
             String actions = c.getString(
                     c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS)
             );
+            String filters = c.getString(
+                    c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS)
+            );
             Util.d(type + " " + additional);
-            if(additional.equalsIgnoreCase(phoneNumber)){
+            if(additional.equalsIgnoreCase(phoneNumber)&& checkFilters(filters)){
                 doActions(actions);
             }
 
@@ -97,8 +108,11 @@ public class Functionality {
             String actions = c.getString(
                     c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS)
             );
-            Location endPoint = getLocation(c);
-            if (endPoint.distanceTo(l) < 800) {
+            String filters = c.getString(
+                    c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS)
+            );
+            Location endPoint = getCursorLocation(c);
+            if (checkArivalLoction(l, endPoint) && checkFilters(filters)) {
                 doActions(actions);
             }
             c.moveToNext();
@@ -109,15 +123,19 @@ public class Functionality {
             String actions = leave.getString(
                     leave.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS)
             );
-            Location endPoint = getLocation(leave);
-            if (endPoint.distanceTo(l) > 800) {
+            String filters = leave.getString(
+                    leave.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS)
+            );
+            Location endPoint = getCursorLocation(leave);
+            if (checkLeaveLoction(l, endPoint) && checkFilters(filters)) {
+
                 doActions(actions);
             }
             leave.moveToNext();
 
         }
     }
-    private Location getLocation(Cursor c){
+    private Location getCursorLocation(Cursor c){
         String type = c.getString(
                 c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_TYPE)
         );
@@ -125,8 +143,12 @@ public class Functionality {
                 c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO)
         );
         Util.d(type + " " + additional);
+        return getLocation(additional);
+
+    }
+    private Location getLocation(String position){
         Location endPoint = new Location("selfMade");
-        String latlong[] = additional.split(",");
+        String latlong[] = position.split(",");
         endPoint.setLongitude(Double.parseDouble(latlong[1]));
         endPoint.setLatitude(Double.parseDouble(latlong[0]));
         return endPoint;
@@ -139,7 +161,7 @@ public class Functionality {
                 TriggerContract.TriggerEntry.COLUMN_NAME_TYPE,
                 TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO,
                 TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS,
-                TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS
+                TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS
         };
         Cursor c = db.query(
                 TriggerContract.TriggerEntry.TABLE_NAME,  // The table to query
@@ -160,6 +182,41 @@ public class Functionality {
                 null                                 // The sort order
         );*/
         return c;
+    }
+    public boolean checkFilters(String filters){
+        String [] filter = filters.split(FILTER_SEPERATOR);
+        for (int i =0; i < filter.length; i++){
+            if(!checkFilter(filter[i])){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkFilter(String filter){
+        String [] filterStuff = filter.split(" ");
+        String type = filterStuff[0];
+        String params = filterStuff[1];
+
+        switch (type) {
+            case FILTER_TIME:
+                Util.d(params);
+                return true;
+
+        }
+        return false;
+
+    }
+
+
+
+    public boolean checkArivalLoction(Location a, Location b){
+        return a.distanceTo(b) < DISTANCE;
+    }
+    public boolean checkLeaveLoction(Location a, Location b){
+        return a.distanceTo(b) > DISTANCE;
+    }
+    public boolean checkPhoneNumber(String number1, String number2){
+        return number1.equalsIgnoreCase(number2);
     }
 
     private void doActions(String actions) {
@@ -210,6 +267,7 @@ public class Functionality {
                 break;
         }
     }
+
 
 
     public static void setMediaVolume(int volume, Context context){
