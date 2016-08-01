@@ -49,6 +49,8 @@ public class BasicTime implements Serializable, Comparable<BasicTime> {
         return "" + th + tm + apm;
     }
 
+
+
     public static int milToStandardHours(int hours) {
         int th = hours % 12;
         return th == 0 ? 12: th;

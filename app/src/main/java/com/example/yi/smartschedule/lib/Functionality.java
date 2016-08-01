@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import java.util.Calendar;
+
 import android.location.Location;
 import android.media.AudioManager;
 import android.provider.Settings;
@@ -91,7 +93,7 @@ public class Functionality {
                     c.getColumnIndexOrThrow(TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS)
             );
             Util.d(type + " " + additional);
-            if(additional.equalsIgnoreCase(phoneNumber)&& checkFilters(filters)){
+            if(additional.equalsIgnoreCase(phoneNumber) && checkFilters(filters)){
                 doActions(actions);
             }
 
@@ -197,8 +199,7 @@ public class Functionality {
 
         switch (type) {
             case FILTER_TIME:
-                Util.d(params);
-                return true;
+                return checkTimeLater(params);
 
         }
         return false;
@@ -206,7 +207,16 @@ public class Functionality {
     }
 
 
+    public boolean checkTimeLater(String time){
 
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        BasicTime current = new BasicTime(hour, min);
+        String [] hourmin = time.split(":");
+        BasicTime newTime = new BasicTime(Integer.parseInt(hourmin[0]), Integer.parseInt(hourmin[1]));
+        return (newTime.compareTo(current)) <= 0;
+    }
     public boolean checkArivalLoction(Location a, Location b){
         return a.distanceTo(b) < DISTANCE;
     }
