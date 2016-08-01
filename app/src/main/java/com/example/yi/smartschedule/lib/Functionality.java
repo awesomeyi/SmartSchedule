@@ -10,10 +10,8 @@ import android.location.Location;
 import android.media.AudioManager;
 import android.provider.Settings;
 
-import com.example.yi.smartschedule.lib.db.TriggerContract;
-import com.example.yi.smartschedule.lib.db.TriggerDbHelper;
-
-import java.security.PublicKey;
+import com.example.yi.smartschedule.db.TriggerContract;
+import com.example.yi.smartschedule.db.TriggerDbHelper;
 
 /**
  * Created by jackphillips on 7/15/16.

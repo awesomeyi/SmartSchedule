@@ -1,9 +1,8 @@
-package com.example.yi.smartschedule.lib.db;
+package com.example.yi.smartschedule.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.yi.smartschedule.lib.db.TriggerContract.TriggerEntry;
 
 /**
  * Created by jackphillips on 7/15/16.
@@ -14,16 +13,16 @@ public class TriggerDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + TriggerEntry.TABLE_NAME + " (" +
-                    TriggerEntry._ID + " INTEGER PRIMARY KEY," +
-                    TriggerEntry.COLUMN_NAME_TYPE + TEXT_TYPE + COMMA_SEP +
-                    TriggerEntry.COLUMN_NAME_ADTIONAL_INFO + TEXT_TYPE + COMMA_SEP +
-                    TriggerEntry.COLUMN_NAME_ACTIONS + TEXT_TYPE + COMMA_SEP +
-                    TriggerEntry.COLUMN_NAME_FILTERS + TEXT_TYPE +
+            "CREATE TABLE " + TriggerContract.TriggerEntry.TABLE_NAME + " (" +
+                    TriggerContract.TriggerEntry._ID + " INTEGER PRIMARY KEY," +
+                    TriggerContract.TriggerEntry.COLUMN_NAME_TYPE + TEXT_TYPE + COMMA_SEP +
+                    TriggerContract.TriggerEntry.COLUMN_NAME_ADTIONAL_INFO + TEXT_TYPE + COMMA_SEP +
+                    TriggerContract.TriggerEntry.COLUMN_NAME_ACTIONS + TEXT_TYPE + COMMA_SEP +
+                    TriggerContract.TriggerEntry.COLUMN_NAME_FILTERS + TEXT_TYPE +
             " )";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + TriggerEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + TriggerContract.TriggerEntry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;

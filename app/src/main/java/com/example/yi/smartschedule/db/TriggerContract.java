@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib.db;
+package com.example.yi.smartschedule.db;
 
 import android.provider.BaseColumns;
 

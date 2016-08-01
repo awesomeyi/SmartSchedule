@@ -1,4 +1,4 @@
-package com.example.yi.smartschedule.lib.triggers;
+package com.example.yi.smartschedule.background;
 
 import android.Manifest;
 import android.app.Service;

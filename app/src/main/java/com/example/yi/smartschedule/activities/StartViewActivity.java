@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.Functionality;
-import com.example.yi.smartschedule.lib.triggers.LocationService;
+import com.example.yi.smartschedule.background.LocationService;
 
 public class StartViewActivity extends AppCompatActivity implements View.OnClickListener {
 
