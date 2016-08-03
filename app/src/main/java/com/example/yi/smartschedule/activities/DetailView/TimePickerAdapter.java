@@ -73,7 +73,6 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
         Util.d("start: " + start.formatDebug());
         for(int i = 1; i <= tnum; ++i) {
             allTimes.add(BasicTime.create(0, interval * i).addTime(start));
-            Util.d(BasicTime.create(0, interval * i).addTime(start).formatDebug());
         }
     }
 

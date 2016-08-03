@@ -25,13 +25,22 @@ import com.example.yi.smartschedule.lib.Util;
 
 public class TimePickerFragment extends Fragment {
 
-    private static String P_START = "startTime";
-    private static String P_LIMIT = "limit";
-    private static String P_TOP = "top";
+    private static final String P_START = "startTime";
+    private static final String P_LIMIT = "limit";
+    private static final String P_TOP = "top";
+
+    //TimePicker size/height
+    private static final int DISPLAY_OFFSET = 3;
+    private static final int BLOCK_HEIGHT = 26;
+    private static final int LIST_HEIGHT = (DISPLAY_OFFSET * 2 + 1) * 26; //182
+    private static final int ANIMATION_DURATION = 200; //ms
+    private static final int ARROW_HEIGHT = 10;
+    private static final int ARROW_OFFSET = 23;
 
     private BasicTime startTime, limit;
     private boolean top = true;
 
+    //Views
     private View myView;
     private RecyclerView time_picker_list;
     private View picker_button, picker_layout;
@@ -85,19 +94,23 @@ public class TimePickerFragment extends Fragment {
         time_indicator_down = v.findViewById(R.id.time_indicator_down);
         top_block = v.findViewById(R.id.top_block);
 
-
         this.setTimeText();
+
+        final int ARROW_END = Math.round((LIST_HEIGHT - ARROW_OFFSET) / 2);
 
         picker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if(top) {
-                    time_indicator_up.startAnimation(createSlide(0, 0, -10, 70 + getOffset()));
-                    time_indicator_down.startAnimation(createSlide(0, 0, 0, 80 + getOffset()));
+                    int oy = 0, ny = ARROW_END + getOffset();
+                    time_indicator_down.startAnimation(createSlide(oy, ny));
+                    time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
+
                 } else {
-                    time_indicator_up.startAnimation(createSlide(0, 0, 0, -(80 + getOffset()) ));
-                    time_indicator_down.startAnimation(createSlide(0, 0, 10, -(70 + getOffset()) ));
+                    int oy = 0, ny = -(ARROW_END + getOffset());
+                    time_indicator_up.startAnimation(createSlide(oy, ny));
+                    time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
                 }
 
                 picker_layout.setVisibility(View.VISIBLE);
@@ -109,12 +122,15 @@ public class TimePickerFragment extends Fragment {
         timePickerAdapter = new TimePickerAdapter(limit, top, new TimePickerAdapter.TimeSelectListener() {
             @Override
             public void onTimeClick(BasicTime time) {
+                
                 if(top) {
-                    time_indicator_up.startAnimation(createSlide(0, 0, 70 + getOffset(), -10));
-                    time_indicator_down.startAnimation(createSlide(0, 0, 80 + getOffset(), 0));
+                    int oy = ARROW_END + getOffset(), ny = 0;
+                    time_indicator_down.startAnimation(createSlide(oy, ny));
+                    time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
                 } else {
-                    time_indicator_up.startAnimation(createSlide(0, 0, -(80 + getOffset()), 0));
-                    time_indicator_down.startAnimation(createSlide(0, 0, -(70 + getOffset()), 10));
+                    int oy = -(ARROW_END + getOffset()), ny = 0;
+                    time_indicator_up.startAnimation(createSlide(oy, ny));
+                    time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
                 }
 
                 startTime = time;
@@ -164,8 +180,8 @@ public class TimePickerFragment extends Fragment {
 
     private int getOffset() {
         int curidx = timePickerAdapter.getTimeIndex(startTime);
-        if(curidx <= 3)
-            return 26 * (3 - curidx);
+        if(curidx <= DISPLAY_OFFSET)
+            return BLOCK_HEIGHT * (DISPLAY_OFFSET - curidx);
         return 0;
     }
 
@@ -176,14 +192,14 @@ public class TimePickerFragment extends Fragment {
 
     private void scrollToTime() {
         int curidx = timePickerAdapter.getTimeIndex(startTime);
-        int entries = curidx + 3;
+        int entries = curidx + DISPLAY_OFFSET;
         timePickerAdapter.addTimes(entries - timePickerAdapter.getItemCount() + 1);
-        timePickerLayout.scrollToPositionWithOffset(curidx, Util.pixel_to_dp(getContext(), 91 - 13));
+        timePickerLayout.scrollToPositionWithOffset(curidx, Util.pixel_to_dp(getContext(), (LIST_HEIGHT / 2) - (BLOCK_HEIGHT / 2)));
     }
 
-    private Animation createSlide(int ox, int nx, int oy, int ny) {
-        Animation slide = new TranslateAnimation(Util.pixel_to_dp(getContext(), ox), Util.pixel_to_dp(getContext(), nx), Util.pixel_to_dp(getContext(), oy) , Util.pixel_to_dp(getContext(), ny));
-        slide.setDuration(200);
+    private Animation createSlide(int oy, int ny) {
+        Animation slide = new TranslateAnimation(0, 0, Util.pixel_to_dp(getContext(), oy) , Util.pixel_to_dp(getContext(), ny));
+        slide.setDuration(ANIMATION_DURATION);
         slide.setInterpolator(new FastOutSlowInInterpolator());
         slide.setFillAfter(true);
         return slide;
