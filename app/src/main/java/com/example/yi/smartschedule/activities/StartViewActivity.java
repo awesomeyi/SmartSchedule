@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.yi.smartschedule.R;
+import com.example.yi.smartschedule.lib.BasicTime;
 import com.example.yi.smartschedule.lib.Functionality;
 import com.example.yi.smartschedule.background.LocationService;
+import com.example.yi.smartschedule.lib.Util;
 
 public class StartViewActivity extends AppCompatActivity implements View.OnClickListener {
 

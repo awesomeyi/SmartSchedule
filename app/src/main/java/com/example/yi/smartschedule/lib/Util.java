@@ -14,6 +14,9 @@ public class Util {
     public static void d(String message) {
         Log.d(Constants.DEBUG, message);
     }
+    public static void d(Object message) {
+        Log.d(Constants.DEBUG, message.toString());
+    }
 
     public static int pixel_to_dp(Context ct, int px) {
         final float scale = ct.getResources().getDisplayMetrics().density;

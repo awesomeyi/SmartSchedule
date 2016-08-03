@@ -3,7 +3,6 @@ package com.example.yi.smartschedule.activities.TimeView;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.inputmethod.InputMethodSession;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,7 +47,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     }
 
     private String durationText(BasicTime start, BasicTime end) {
-        return String.format("%1$s - %2$s", start.formatStandard(), end.formatStandard());
+        return String.format("%1$s - %2$s", start.formatCompressed(), end.formatCompressed());
     }
 
     public void setData(Context ctx, EventBlock eb) {

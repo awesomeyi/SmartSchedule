@@ -102,7 +102,6 @@ public class TimePickerFragment extends Fragment {
 
                 picker_layout.setVisibility(View.VISIBLE);
                 picker_button.setVisibility(View.INVISIBLE);
-                scrollToTime();
             }
         });
 
@@ -122,6 +121,7 @@ public class TimePickerFragment extends Fragment {
                 setTimeText();
                 picker_layout.setVisibility(View.INVISIBLE);
                 picker_button.setVisibility(View.VISIBLE);
+                scrollToTime();
             }
         });
         scrollToTime();
@@ -170,8 +170,8 @@ public class TimePickerFragment extends Fragment {
     }
 
     private void setTimeText() {
-        hour_text.setText("" + ( BasicTime.milToStandardHours((int) startTime.getHours())));
-        minute_text.setText(String.format("%1$02d", (startTime.getMinutes() % 60) ));
+        hour_text.setText(startTime.formatStandard().hour);
+        minute_text.setText(startTime.formatStandard().minute);
     }
 
     private void scrollToTime() {

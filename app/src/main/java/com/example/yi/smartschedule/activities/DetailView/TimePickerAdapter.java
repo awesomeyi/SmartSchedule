@@ -45,13 +45,13 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
 
             TextView hour_text = (TextView) myView.findViewById(R.id.hour_text),
                     minutes_text = (TextView) myView.findViewById(R.id.minute_text);
-            hour_text.setText("" + ( BasicTime.milToStandardHours((int) time.getHours())));
-            if(time.getMinutes() % 15 == 0) {
+            hour_text.setText(time.formatStandard().hour);
+            if(time.getTotalMinutes() % 15 == 0) {
                 hour_text.setVisibility(View.VISIBLE);
             } else {
                 hour_text.setVisibility(View.INVISIBLE);
             }
-            minutes_text.setText(String.format("%1$02d", (time.getMinutes() % 60) ));
+            minutes_text.setText(time.formatStandard().minute);
         }
 
         @Override
@@ -70,13 +70,15 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
 
     public void addTimes(int tnum) {
         BasicTime start = allTimes.get(allTimes.size() - 1);
+        Util.d("start: " + start.formatDebug());
         for(int i = 1; i <= tnum; ++i) {
-            allTimes.add((new BasicTime(0, interval * i).addTime(start)));
+            allTimes.add(BasicTime.create(0, interval * i).addTime(start));
+            Util.d(BasicTime.create(0, interval * i).addTime(start).formatDebug());
         }
     }
 
     public int getTimeIndex(BasicTime time) {
-        return (time.getMinutes() - allTimes.get(0).getMinutes()) / interval;
+        return (time.getTotalMinutes() - allTimes.get(0).getTotalMinutes()) / interval;
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.activities.DetailView.DetailViewFragment;
 import com.example.yi.smartschedule.activities.TimeView.TimeViewFragment;
+import com.example.yi.smartschedule.lib.BasicTime;
+import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.EventData;
 
 public class MainViewActivity extends AppCompatActivity

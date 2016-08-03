@@ -1,7 +1,6 @@
 package com.example.yi.smartschedule.models;
 
 import com.example.yi.smartschedule.lib.BasicTime;
-import com.example.yi.smartschedule.lib.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,11 +65,6 @@ public class EventStore {
         Collections.sort(byStart, new c_EventData_start());
         byEnd.addAll(new ArrayList<>(Arrays.asList(events)));
         Collections.sort(byEnd, new c_EventData_end());
-
-//        for(EventData e : byStart)
-//            Util.d("ByStart: " + e.getStartTime().formatStandard() + "-" + e.getEndTime().formatStandard() + ",");
-//        for(EventData e : byEnd)
-//            Util.d("ByEnd: " + e.getStartTime().formatStandard() + "-" + e.getEndTime().formatStandard() + ",");
         return this;
     }
 
@@ -114,8 +108,8 @@ public class EventStore {
         //Not found
         for(int i = 0; i < -idx; ++i) {
             EventData cur = byStart.get(i);
-            int mindiff = time.subtractTime(cur.getStartTime()).getMinutes();
-            if(mindiff >= 0 && mindiff < cur.getDuration().getMinutes()) {
+            int mindiff = time.subtractTime(cur.getStartTime()).getTotalMinutes();
+            if(mindiff >= 0 && mindiff < cur.getDuration().getTotalMinutes()) {
                 return cur;
             }
         }
@@ -129,7 +123,7 @@ public class EventStore {
         if(idx >= 0)
             return true;
         EventData next = this.at(-idx - 1);
-        if(next != null && next.getStartTime().getMinutes() < t2.getMinutes()) {
+        if(next != null && next.getStartTime().getTotalMinutes() < t2.getTotalMinutes()) {
             return true;
         }
 
@@ -138,7 +132,7 @@ public class EventStore {
         if(idx >= 0)
             return true;
         next = this.at(-idx - 1);
-        if(next != null && next.getEndTime().getMinutes() < t2.getMinutes())
+        if(next != null && next.getEndTime().getTotalMinutes() < t2.getTotalMinutes())
             return true;
 
         return false;

@@ -46,12 +46,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
             TextView hour_text = (TextView) my_view.findViewById(R.id.hour_text);
             View hour_view = (my_view.findViewById(R.id.hour_view));
             View hour_mark = my_view.findViewById(R.id.hour_mark);
-            //Random r = new Random();
-            //my_view.setBackgroundColor(Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
 
             int finalheight = Util.pixel_to_dp(ctx, MainViewActivity.FULL_HOUR_HEIGHT());
             my_view.getLayoutParams().height = finalheight;
-            //Util.d("" + (hour_text.getLineHeight()));
 
             hour_text.setText("" + BasicTime.milToStandardHours(tb.startMark));
             switch (tb.mark) {
@@ -74,7 +71,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
     }
 
     public TimeLineAdapter addDay(EventStore today, BasicTime starttime) {
-        int cur = (int) Math.floor(starttime.getHours());
+        int cur = (int) Math.floor(starttime.getApproxHours());
         int end = 11;
 
         for(; cur <= end; ++cur) {

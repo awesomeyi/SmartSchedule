@@ -36,7 +36,7 @@ public class EventBlock {
     }
     //Set height according to duration
     public EventBlock setHeight(BasicTime duration) {
-        this.height = (int) Math.round(MainViewActivity.FULL_HOUR_HEIGHT() * duration.getHours());
+        this.height = (int) Math.round(MainViewActivity.FULL_HOUR_HEIGHT() * duration.getApproxHours());
         return this;
     }
 

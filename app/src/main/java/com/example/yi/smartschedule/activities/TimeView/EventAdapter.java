@@ -53,7 +53,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
             BasicTime duration = start.getStartTime().subtractTime(starttime);
             startPad.setHeight(duration);
 
-            if(start.getStartTime().getMinutes() % 30 == 0) {
+            if(start.getStartTime().getTotalMinutes() % 30 == 0) {
                 this.fudgePadding(startPad);
             }
             allBlocks.add(startPad);
@@ -82,7 +82,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
                 paddingBlock.setHeight(duration);
 
                 //Adjust padding so its exact
-                if(after.getStartTime().getMinutes() % 30 == 0) {
+                if(after.getStartTime().getTotalMinutes() % 30 == 0) {
                     this.fudgePadding(paddingBlock);
                 }
             }
