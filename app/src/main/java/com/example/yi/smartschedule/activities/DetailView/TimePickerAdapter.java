@@ -27,7 +27,6 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
         public void onTimeClick(BasicTime time);
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private View myView;
         private BasicTime myTime;
@@ -70,7 +69,6 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
 
     public void addTimes(int tnum) {
         BasicTime start = allTimes.get(allTimes.size() - 1);
-        Util.d("start: " + start.formatDebug());
         for(int i = 1; i <= tnum; ++i) {
             allTimes.add(BasicTime.create(0, interval * i).addTime(start));
         }
@@ -78,6 +76,12 @@ public class TimePickerAdapter extends RecyclerView.Adapter<TimePickerAdapter.Vi
 
     public int getTimeIndex(BasicTime time) {
         return (time.getTotalMinutes() - allTimes.get(0).getTotalMinutes()) / interval;
+    }
+
+    public BasicTime getTimeAt(int idx) {
+        if(idx >= allTimes.size() || idx < 0)
+            return null;
+        return allTimes.get(idx);
     }
 
     @Override

@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 import com.example.yi.smartschedule.R;
 import com.example.yi.smartschedule.lib.BasicTime;
 import com.example.yi.smartschedule.lib.EndlessScrollListener;
+import com.example.yi.smartschedule.lib.Util;
 import com.example.yi.smartschedule.models.DateManager;
 
 public class DetailViewFragment extends Fragment {
+
+    private TimePickerFragment top_time_picker;
+    private TimePickerFragment bottom_time_picker;
+
+    private PresetPickerFragment preset_picker;
 
     public DetailViewFragment() { }
 
@@ -34,13 +40,24 @@ public class DetailViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_view, container, false);
 
+        top_time_picker = TimePickerFragment.newInstance(new BasicTime(10, 30), new BasicTime(12, 00), true);
+        bottom_time_picker = TimePickerFragment.newInstance(new BasicTime(12, 00), new BasicTime(10, 30), false);
+        preset_picker = new PresetPickerFragment();
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                top_time_picker.autoClosePicker();
+                bottom_time_picker.autoClosePicker();
+            }
+        });
+
         if (savedInstanceState == null) {
-            TimePickerFragment top_time_picker = TimePickerFragment.newInstance(new BasicTime(10, 30), new BasicTime(12, 00), true);
-            TimePickerFragment bottom_time_picker = TimePickerFragment.newInstance(new BasicTime(12, 00), new BasicTime(10, 30), false);
 
             getFragmentManager().beginTransaction()
                     .add(R.id.top_picker_container, top_time_picker)
                     .add(R.id.bottom_picker_container, bottom_time_picker)
+                    .add(R.id.preset_picker, preset_picker)
                     .commit();
         }
         return v;

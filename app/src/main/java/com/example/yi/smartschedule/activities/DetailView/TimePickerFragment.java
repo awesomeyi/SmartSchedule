@@ -30,15 +30,16 @@ public class TimePickerFragment extends Fragment {
     private static final String P_TOP = "top";
 
     //TimePicker size/height
-    private static final int DISPLAY_OFFSET = 3;
-    private static final int BLOCK_HEIGHT = 26;
+    private static final int DISPLAY_OFFSET = 3; //Elements
+    private static final int BLOCK_HEIGHT = 26; //DP
     private static final int LIST_HEIGHT = (DISPLAY_OFFSET * 2 + 1) * 26; //182
     private static final int ANIMATION_DURATION = 200; //ms
-    private static final int ARROW_HEIGHT = 10;
-    private static final int ARROW_OFFSET = 23;
+    private static final int ARROW_HEIGHT = 10; //DP
+    private static final int ARROW_OFFSET = 23; //DP
 
     private BasicTime startTime, limit;
     private boolean top = true;
+    private boolean pickerOpen = false;
 
     //Views
     private View myView;
@@ -96,25 +97,10 @@ public class TimePickerFragment extends Fragment {
 
         this.setTimeText();
 
-        final int ARROW_END = Math.round((LIST_HEIGHT - ARROW_OFFSET) / 2);
-
         picker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(top) {
-                    int oy = 0, ny = ARROW_END + getOffset();
-                    time_indicator_down.startAnimation(createSlide(oy, ny));
-                    time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
-
-                } else {
-                    int oy = 0, ny = -(ARROW_END + getOffset());
-                    time_indicator_up.startAnimation(createSlide(oy, ny));
-                    time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
-                }
-
-                picker_layout.setVisibility(View.VISIBLE);
-                picker_button.setVisibility(View.INVISIBLE);
+                openPicker();
             }
         });
 
@@ -122,22 +108,7 @@ public class TimePickerFragment extends Fragment {
         timePickerAdapter = new TimePickerAdapter(limit, top, new TimePickerAdapter.TimeSelectListener() {
             @Override
             public void onTimeClick(BasicTime time) {
-                
-                if(top) {
-                    int oy = ARROW_END + getOffset(), ny = 0;
-                    time_indicator_down.startAnimation(createSlide(oy, ny));
-                    time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
-                } else {
-                    int oy = -(ARROW_END + getOffset()), ny = 0;
-                    time_indicator_up.startAnimation(createSlide(oy, ny));
-                    time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
-                }
-
-                startTime = time;
-                setTimeText();
-                picker_layout.setVisibility(View.INVISIBLE);
-                picker_button.setVisibility(View.VISIBLE);
-                scrollToTime();
+                closePicker(time);
             }
         });
         scrollToTime();
@@ -161,6 +132,57 @@ public class TimePickerFragment extends Fragment {
 
         myView = v;
         return v;
+    }
+
+    public void openPicker() {
+        if(pickerOpen)
+            return;
+
+        final int ARROW_END = Math.round((LIST_HEIGHT - ARROW_OFFSET) / 2);
+        if(top) {
+            int oy = 0, ny = ARROW_END + getOffset();
+            time_indicator_down.startAnimation(createSlide(oy, ny));
+            time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
+
+        } else {
+            int oy = 0, ny = -(ARROW_END + getOffset());
+            time_indicator_up.startAnimation(createSlide(oy, ny));
+            time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
+        }
+
+        picker_layout.setVisibility(View.VISIBLE);
+        picker_button.setVisibility(View.INVISIBLE);
+        pickerOpen = true;
+    }
+
+    public void autoClosePicker() {
+        if(!pickerOpen)
+            return;
+        int fidx = timePickerLayout.findFirstCompletelyVisibleItemPosition() + DISPLAY_OFFSET;
+        Util.d(timePickerAdapter.getTimeAt(fidx).formatDebug());
+        closePicker(timePickerAdapter.getTimeAt(fidx));
+    }
+
+    public void closePicker(BasicTime time) {
+        if(!pickerOpen)
+            return;
+
+        final int ARROW_END = Math.round((LIST_HEIGHT - ARROW_OFFSET) / 2);
+        if(top) {
+            int oy = ARROW_END + getOffset(), ny = 0;
+            time_indicator_down.startAnimation(createSlide(oy, ny));
+            time_indicator_up.startAnimation(createSlide(oy - ARROW_HEIGHT, ny - ARROW_HEIGHT));
+        } else {
+            int oy = -(ARROW_END + getOffset()), ny = 0;
+            time_indicator_up.startAnimation(createSlide(oy, ny));
+            time_indicator_down.startAnimation(createSlide(oy + ARROW_HEIGHT, ny + ARROW_HEIGHT));
+        }
+        picker_layout.setVisibility(View.INVISIBLE);
+        picker_button.setVisibility(View.VISIBLE);
+        startTime = time;
+        setTimeText();
+        scrollToTime();
+        pickerOpen = false;
     }
 
     private void adjustBottom() {
